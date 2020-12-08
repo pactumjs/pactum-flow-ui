@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-container>
-      <ProjectCard v-for="project in projects" :key="project._id" :name="project.name" class="mb-2" />
+      <ProjectCard
+        v-for="project in projects"
+        :key="project._id"
+        :name="project.name"
+        class="mb-2"
+      />
     </v-container>
   </div>
 </template>
@@ -13,19 +18,13 @@ export default {
   components: {
     ProjectCard,
   },
-  data: function () {
-    return {
-      projects: [
-        {
-          _id: 'id1',
-          name: '[IQA] component registry'
-        },
-        {
-          _id: 'id2',
-          name: '[SRE] head count'
-        }
-      ]
-    }
-  }
+  computed: {
+    projects() {
+      return this.$store.state.projects.projects;
+    },
+  },
+  created() {
+    this.$store.dispatch("getProjects");
+  },
 };
 </script>
