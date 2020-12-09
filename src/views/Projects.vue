@@ -1,12 +1,20 @@
 <template>
   <div>
     <v-container>
-      <ProjectCard
-        v-for="project in projects"
-        :key="project._id"
-        :name="project.name"
-        class="mb-2"
-      />
+      <v-row>
+        <v-col cols="2">
+          <v-sheet rounded="lg" min-height="30vh" class="grey lighten-3">
+          </v-sheet>
+        </v-col>
+        <v-col cols="10">
+          <ProjectCard
+            v-for="project in projects"
+            :key="project._id"
+            :project="project"
+            class="mb-2"
+          />
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
