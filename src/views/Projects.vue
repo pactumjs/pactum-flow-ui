@@ -32,7 +32,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("getProjects");
+    this.$store.dispatch("LOAD_PROJECTS_HOME_PAGE");
   },
 };
 </script>
