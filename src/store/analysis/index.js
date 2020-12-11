@@ -15,6 +15,9 @@ const getters = {
 const mutations = {
   [Mutations.STORE_ANALYSIS](state, analysis) {
     state.analysis = analysis;
+  },
+  [Mutations.ADD_ANALYSIS](state, analysis) {
+    state.analysis.push(analysis);
   }
 };
 
@@ -27,6 +30,10 @@ const actions = {
       }
     });
     commit(Mutations.STORE_ANALYSIS, await response.json());
+  },
+  async [Actions.FETCH_ANALYSIS_BY_ID]({ commit }, id) {
+    const response = await fetch(`/api/flow/v1/analysis/${id}`);
+    commit(Mutations.ADD_ANALYSIS, await response.json());
   }
 }
 

@@ -11,24 +11,24 @@ mock.addMockInteraction({
     status: 200,
     body: [
       {
-        _id: 'id1',
+        _id: 'pid1',
         name: '[AVG] project-mars',
         analysis: {
-          main: ['id1', 'id2']
+          main: ['aid1', 'aid2']
         }
       },
       {
-        _id: 'id2',
+        _id: 'pid2',
         name: '[AVG] project-jupiter',
         analysis: {
           main: []
         }
       },
       {
-        _id: 'id3',
+        _id: 'pid3',
         name: '[TRD] hulk-hogan',
         analysis: {
-          main: ['id3', 'id4', 'id5']
+          main: ['aid3', 'aid4', 'aid5']
         }
       }
     ]
@@ -44,16 +44,94 @@ mock.addMockInteraction({
     status: 200,
     body: [
       {
-        _id: 'id2',
-        flows: ['fid1', 'fid2'],
+        _id: 'aid2',
+        flows: ['fid1', 'fid2', 'fid3'],
         consumers: [],
         providers: ['[TRD] hulk-hogan']
       },
       {
-        _id: 'id5',
+        _id: 'aid5',
         flows: [],
         consumers: ['[AVG] project-mars'],
         providers: []
+      }
+    ]
+  }
+});
+
+mock.addMockInteraction({
+  withRequest: {
+    method: 'GET',
+    path: '/api/flow/v1/project/pid1'
+  },
+  willRespondWith: {
+    status: 200,
+    body: {
+      _id: 'pid1',
+      name: '[AVG] project-mars',
+      analysis: {
+        main: ['aid1', 'aid2']
+      }
+    }
+  }
+});
+
+mock.addMockInteraction({
+  withRequest: {
+    method: 'GET',
+    path: '/api/flow/v1/analysis/aid2'
+  },
+  willRespondWith: {
+    status: 200,
+    body: {
+      _id: 'aid2',
+      flows: ['fid1', 'fid2', 'fid3'],
+      consumers: [],
+      providers: ['[TRD] hulk-hogan']
+    }
+  }
+});
+
+mock.addMockInteraction({
+  withRequest: {
+    method: 'POST',
+    path: '/api/flow/v1/flows/search'
+  },
+  willRespondWith: {
+    status: 200,
+    body: [
+      {
+        _id: 'fid1',
+        name: 'get all users',
+        request: {
+          method: 'GET',
+          path: '/api/users'
+        },
+        response: {
+          statusCode: 200
+        }
+      },
+      {
+        _id: 'fid2',
+        name: 'post a user',
+        request: {
+          method: 'POST',
+          path: '/api/user/{userId}'
+        },
+        response: {
+          statusCode: 200
+        }
+      },
+      {
+        _id: 'fid3',
+        name: 'delete a non-existent user',
+        request: {
+          method: 'DELETE',
+          path: '/api/user/{userId}'
+        },
+        response: {
+          statusCode: 400
+        }
       }
     ]
   }
