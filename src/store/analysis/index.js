@@ -25,8 +25,11 @@ const actions = {
   async [Actions.FETCH_ANALYSIS_BY_IDS]({ commit }, ids) {
     const response = await fetch('/api/flow/v1/analysis/search', {
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         analysisIds: ids
+      }),
+      headers: {
+        'Content-Type': 'application/json'
       }
     });
     commit(Mutations.STORE_ANALYSIS, await response.json());

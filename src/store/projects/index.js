@@ -3,7 +3,7 @@ import { Actions, Mutations } from '../types';
 const state = () => {
   return {
     projects: [],
-    selectedMenu: 'Overview'
+    selectedMenu: 'overview'
   }
 }
 
@@ -27,12 +27,12 @@ const mutations = {
 
 const actions = {
   async [Actions.FETCH_PROJECTS]({ commit }) {
-    const response = await fetch('/api/flow/v1/project');
+    const response = await fetch('/api/flow/v1/projects');
     const projects = await response.json();
     commit(Mutations.STORE_PROJECTS, projects);
   },
   async [Actions.FETCH_PROJECT_BY_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/project/${id}`);
+    const response = await fetch(`/api/flow/v1/projects/${id}`);
     const project = await response.json();
     commit(Mutations.ADD_PROJECT, project);
   }

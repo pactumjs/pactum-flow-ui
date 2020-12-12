@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start:mock": "cd test && cd mock && nodemon server.js"
+    "mock": "cd test && cd mock && nodemon server.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -16,6 +16,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@mdi/font": "^5.8.55",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "^4.5.9",

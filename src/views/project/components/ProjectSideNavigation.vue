@@ -10,7 +10,7 @@
       <v-list dense nav>
         <v-list-item-group mandatory v-model="selected" active-class="border">
           <v-list-item v-for="item in items" :key="item.title" @click="selectMenu(item.title)" class="yellow--text">
-            <v-list-item-icon>
+            <v-list-item-icon class="mr-4">
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
@@ -29,9 +29,11 @@ export default {
   data() {
     return {
       items: [
-        { title: "Overview", icon: "mdi-view-dashboard" },
-        { title: "Flows", icon: "mdi-arrow-decision-outline" },
-        { title: "Endpoints", icon: "mdi-elevator" },
+        { title: "overview", icon: "mdi-view-dashboard" },
+        { title: "flows", icon: "mdi-arrow-decision-outline" },
+        { title: "endpoints", icon: "mdi-elevator" },
+        { title: "consumers", icon: "mdi-download-outline" },
+        { title: "providers", icon: "mdi-upload-outline" },
       ],
       selected: [1],
     };

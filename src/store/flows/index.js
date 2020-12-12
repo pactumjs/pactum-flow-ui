@@ -26,8 +26,11 @@ const actions = {
   async [Actions.FETCH_FLOWS_BY_IDS]({ commit }, ids) {
     const response = await fetch('/api/flow/v1/flows/search', {
       method: 'POST',
-      body: {
-        flowsIds: ids
+      body: JSON.stringify({
+        flowIds: ids
+      }),
+      headers: {
+        'Content-Type': 'application/json'
       }
     });
     commit(Mutations.ADD_FLOWS, await response.json());

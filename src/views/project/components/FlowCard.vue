@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mb-2" outlined>
+    <v-card class="mb-4" outlined>
       <v-card-text class="font-weight-bold pt-1 pb-1">
         <v-icon small class="mr-1">mdi-arrow-decision-outline</v-icon>
         {{ flow.name }}

@@ -22,7 +22,9 @@ const actions = {
           ids.push(main[main.length - 1]);
         }
       }
-      await dispatch(Actions.FETCH_ANALYSIS_BY_IDS, ids);
+      if (ids.length > 0) {
+        await dispatch(Actions.FETCH_ANALYSIS_BY_IDS, ids);
+      }
     }
   },
   async [Actions.LOAD_PROJECT_DASHBOARD_PAGE]({ state, dispatch }, pid) {
@@ -39,7 +41,9 @@ const actions = {
         await dispatch(Actions.FETCH_ANALYSIS_BY_ID, aid);
         analysis = state.analysis.analysis.find(_analysis => _analysis._id === aid);
       }
-      await dispatch(Actions.FETCH_FLOWS_BY_IDS, analysis.flows);
+      if (analysis.flows.length > 0) {
+        await dispatch(Actions.FETCH_FLOWS_BY_IDS, analysis.flows);
+      }
     }
   },
   async [Actions.LOAD_PROJECT_MENU_PAGE]({ commit }, menu) {

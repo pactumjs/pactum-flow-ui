@@ -45,10 +45,12 @@ export default {
           project.flows = analysis.flows.length;
           project.consumers = analysis.consumers.length;
           project.providers = analysis.providers.length;
+          project.endpoints = analysis.endpoints;
         } else {
           project.flows = "-";
           project.consumers = "-";
           project.providers = "-";
+          project.endpoints = "-"
         }
         _projects.push(project);
       }

@@ -1,13 +1,36 @@
 <template>
-  <div class="home">
+  <div class="home mt-6">
     <v-container>
       <div class="text-center">
-        <h1 class="text-h1">Pactum</h1>
-        <v-divider class="mt-1 mb-2"></v-divider>
-        <p class="text-h6 ml-2">
-          REST API testing tool for all levels of testing in a Test Pyramid
+        <div class="mb-6">
+          <span class="text-h2 mr-2">PACTUM</span>
+          <span class="text-h2 black yellow--text pl-2 pr-2">JS</span>
+        </div>
+        <v-divider class="mb-4"></v-divider>
+        <p class="text-h6 mb-8">
+          Free & Open Source REST API testing tool for all levels in a Test
+          Pyramid
         </p>
-        <v-btn dark x-large href="https://asaianudeep.github.io/pactum/#/" target="_blank" class="yellow--text">Get Started</v-btn>
+        <v-btn
+          dark
+          x-large
+          href="https://asaianudeep.github.io/pactum/#/"
+          target="_blank"
+          class="yellow--text mr-2"
+        >
+          Get Started
+          <v-icon right dark> mdi-play </v-icon>
+        </v-btn>
+        <v-btn
+          dark
+          x-large
+          href="https://github.com/ASaiAnudeep/pactum"
+          target="_blank"
+          class="yellow--text ml-2"
+        >
+          GitHub
+          <v-icon right dark> mdi-github </v-icon>
+        </v-btn>
       </div>
     </v-container>
   </div>

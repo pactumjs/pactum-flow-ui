@@ -46,12 +46,14 @@ mock.addMockInteraction({
       {
         _id: 'aid2',
         flows: ['fid1', 'fid2', 'fid3'],
+        endpoints: 0,
         consumers: [],
         providers: ['[TRD] hulk-hogan']
       },
       {
         _id: 'aid5',
         flows: [],
+        endpoints: 0,
         consumers: ['[AVG] project-mars'],
         providers: []
       }
@@ -86,6 +88,7 @@ mock.addMockInteraction({
     body: {
       _id: 'aid2',
       flows: ['fid1', 'fid2', 'fid3'],
+      endpoints: 0,
       consumers: [],
       providers: ['[TRD] hulk-hogan']
     }

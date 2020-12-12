@@ -8,8 +8,8 @@
             <ProjectSideNavigation />
           </v-col>
           <v-col cols="12" sm="10" class="mt-2">
-            <ProjectOverview :project="project" v-if="menu === 'Overview'" />
-            <FlowsOverview :flows="flows" v-if="menu === 'Flows'"/>
+            <ProjectOverview :project="project" v-if="menu === 'overview'" />
+            <FlowsOverview :flows="flows" v-if="menu === 'flows'"/>
           </v-col>
         </v-row>
       </div>

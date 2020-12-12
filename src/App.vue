@@ -2,7 +2,7 @@
   <v-app>
     <NavigationBar />
     <!-- Sizes your content based upon application components -->
-    <v-main>
+    <v-main class="grey lighten-4">
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <!-- If using vue-router -->

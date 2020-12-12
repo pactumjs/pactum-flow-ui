@@ -1,16 +1,40 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="12" sm="3" v-for="metric in metrics" :key="metric.name">
-        <v-card outlined>
-          <v-card-title>
-            <v-icon small left>{{ metric.icon }}</v-icon>
-            {{ metric.count }}
-          </v-card-title>
-          <v-card-subtitle class="text-uppercase overline">
-            {{ metric.name }}
-          </v-card-subtitle>
-        </v-card>
+      <v-col cols="12" sm="6">
+        <v-row>
+          <v-col cols="12" sm="6" v-for="metric in metrics" :key="metric.name">
+            <v-card outlined>
+              <v-card-title>
+                <v-icon small left>{{ metric.icon }}</v-icon>
+                {{ metric.count }}
+              </v-card-title>
+              <v-card-subtitle class="text-uppercase overline">
+                {{ metric.name }}
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" sm="6">
+        <v-row>
+          <v-col
+            cols="12"
+            sm="6"
+            v-for="metric in newMetrics"
+            :key="metric.name"
+          >
+            <v-card color="yellow lighten-5" outlined>
+              <v-card-title>
+                <v-icon small left>{{ metric.icon }}</v-icon>
+                {{ metric.count }}
+              </v-card-title>
+              <v-card-subtitle class="text-uppercase overline">
+                {{ metric.name }}
+              </v-card-subtitle>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </div>
@@ -29,15 +53,72 @@ export default {
         analysis = this.$store.getters.getAnalysisById(ids[ids.length - 1]);
       }
       if (analysis) {
-        _metrics.push({ name: "flows", count: analysis.flows.length, icon: 'mdi-arrow-decision-outline' });
-        _metrics.push({ name: "consumers", count: analysis.consumers.length, icon: 'mdi-download-outline' });
-        _metrics.push({ name: "providers", count: analysis.providers.length, icon: 'mdi-upload-outline' });
+        _metrics.push({
+          name: "flows",
+          count: analysis.flows.length,
+          icon: "mdi-arrow-decision-outline",
+        });
+        _metrics.push({
+          name: "endpoints",
+          count: 0,
+          icon: "mdi-elevator",
+        });
+        _metrics.push({
+          name: "consumers",
+          count: analysis.consumers.length,
+          icon: "mdi-download-outline",
+        });
+        _metrics.push({
+          name: "providers",
+          count: analysis.providers.length,
+          icon: "mdi-upload-outline",
+        });
       } else {
-        _metrics.push({ name: "flows", count: "-", icon: 'mdi-arrow-decision-outline' });
-        _metrics.push({ name: "consumers", count: "-", icon: 'mdi-download-outline' });
-        _metrics.push({ name: "providers", count: "-", icon: 'mdi-upload-outline' });
+        _metrics.push({
+          name: "flows",
+          count: "-",
+          icon: "mdi-arrow-decision-outline",
+        });
+        _metrics.push({
+          name: "endpoints",
+          count: "-",
+          icon: "mdi-elevator",
+        });
+        _metrics.push({
+          name: "consumers",
+          count: "-",
+          icon: "mdi-download-outline",
+        });
+        _metrics.push({
+          name: "providers",
+          count: "-",
+          icon: "mdi-upload-outline",
+        });
       }
-      _metrics.push({ name: "versions", count: ids.length, icon: 'mdi-layers-triple-outline' });
+      return _metrics;
+    },
+    newMetrics: function () {
+      const _metrics = [];
+      _metrics.push({
+        name: "new flows",
+        count: "-",
+        icon: "mdi-arrow-decision-outline",
+      });
+      _metrics.push({
+        name: "new endpoints",
+        count: "-",
+        icon: "mdi-elevator",
+      });
+      _metrics.push({
+        name: "new consumers",
+        count: "-",
+        icon: "mdi-download-outline",
+      });
+      _metrics.push({
+        name: "new providers",
+        count: "-",
+        icon: "mdi-upload-outline",
+      });
       return _metrics;
     },
   },
