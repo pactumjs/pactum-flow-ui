@@ -10,6 +10,7 @@
           <v-col cols="12" sm="10" class="mt-2">
             <ProjectOverview :project="project" v-if="menu === 'overview'" />
             <FlowsOverview :flows="flows" v-if="menu === 'flows'"/>
+            <EndpointsOverview :flows="flows" v-if="menu === 'endpoints'"/>
           </v-col>
         </v-row>
       </div>
@@ -23,6 +24,8 @@ import ProjectHeader from "./components/ProjectHeader";
 import ProjectSideNavigation from "./components/ProjectSideNavigation";
 import ProjectOverview from "./components/ProjectOverview";
 import FlowsOverview from "./components/FlowsOverview";
+import EndpointsOverview from "./components/EndpointsOverview";
+
 export default {
   name: "Project",
   components: {
@@ -30,6 +33,7 @@ export default {
     ProjectSideNavigation,
     ProjectOverview,
     FlowsOverview,
+    EndpointsOverview,
   },
   computed: {
     project() {

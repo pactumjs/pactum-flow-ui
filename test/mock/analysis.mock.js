@@ -10,7 +10,7 @@ addMockInteractionHandler('get analysis aid2', () => {
       status: 200,
       body: {
         _id: 'aid2',
-        flows: ['fid1', 'fid2', 'fid3'],
+        flows: ['fid1', 'fid2', 'fid3', 'fid4', 'fid5'],
         endpoints: 0,
         consumers: [],
         providers: ['[TRD] hulk-hogan']

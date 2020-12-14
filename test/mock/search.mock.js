@@ -41,6 +41,39 @@ addMockInteractionHandler('search flows', () => {
           response: {
             statusCode: 400
           }
+        },
+        {
+          _id: 'fid4',
+          name: 'partial update an existing user',
+          request: {
+            method: 'PUT',
+            path: '/api/user/{userId}'
+          },
+          response: {
+            statusCode: 400
+          }
+        },
+        {
+          _id: 'fid5',
+          name: 'update a existing user',
+          request: {
+            method: 'PATCH',
+            path: '/api/user/{userId}'
+          },
+          response: {
+            statusCode: 400
+          }
+        },
+        {
+          _id: 'fid5',
+          name: 'update a existing user one more time',
+          request: {
+            method: 'PATCH',
+            path: '/api/user/{userId}'
+          },
+          response: {
+            statusCode: 200
+          }
         }
       ]
     }
