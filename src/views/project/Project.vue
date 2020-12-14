@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="pt-0">
-      <div v-if="project">
+      <div v-if="project && analysis">
         <ProjectHeader :name="project.name" />
         <v-row>
           <v-col cols="12" sm="2">
@@ -36,8 +36,12 @@ export default {
       return this.$store.getters.getProjectById(this.$route.params.id);
     },
     analysis() {
-      const ids = this.project.analysis.main;
-      return this.$store.getters.getAnalysisById(ids[ids.length - 1]);
+      if (this.project) {
+        const ids = this.project.analysis.main;
+        return this.$store.getters.getAnalysisById(ids[ids.length - 1]);
+      } else {
+        return null;
+      }
     },
     flows() {
       if (this.analysis) {
@@ -48,11 +52,11 @@ export default {
       }
     },
     menu() {
-      return this.$store.state.projects.selectedMenu;
+      return this.$store.state.ProjectView.selectedMenuItem;
     }
   },
   created() {
-    this.$store.dispatch("LOAD_PROJECT_DASHBOARD_PAGE", this.$route.params.id);
+    this.$store.dispatch("LOAD_PROJECT_VIEW_PAGE", this.$route.params.id);
   },
 };
 </script>

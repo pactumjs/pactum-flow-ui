@@ -2,11 +2,15 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="2">
-          <v-sheet rounded="lg" min-height="30vh" class="grey lighten-3">
-          </v-sheet>
+        <v-col cols="3">
+          <v-card dark outlined>
+            <v-card-title>Filters</v-card-title>
+            <v-card-text>
+              Coming Soon . . .
+            </v-card-text>
+          </v-card>
         </v-col>
-        <v-col cols="10">
+        <v-col cols="9">
           <ProjectCard
             v-for="project in projects"
             :key="project._id"
@@ -28,37 +32,11 @@ export default {
   },
   computed: {
     projects() {
-      const _projects = [];
-      const globalProjects = this.$store.state.projects.projects;
-      for (let i = 0; i < globalProjects.length; i++) {
-        const globalProject = globalProjects[i];
-        const project = {};
-        project._id = globalProject._id;
-        project.name = globalProject.name;
-        const ids = globalProject.analysis.main;
-        project.versions = ids.length;
-        let analysis;
-        if (ids.length > 0) {
-          analysis = this.$store.getters.getAnalysisById(ids[ids.length - 1]);
-        }
-        if (analysis) {
-          project.flows = analysis.flows.length;
-          project.consumers = analysis.consumers.length;
-          project.providers = analysis.providers.length;
-          project.endpoints = analysis.endpoints;
-        } else {
-          project.flows = "-";
-          project.consumers = "-";
-          project.providers = "-";
-          project.endpoints = "-"
-        }
-        _projects.push(project);
-      }
-      return _projects;
+      return this.$store.state.ProjectsView.projectMetrics;
     },
   },
   created() {
-    this.$store.dispatch("LOAD_PROJECTS_DASHBOARD_PAGE");
+    this.$store.dispatch("LOAD_PROJECTS_VIEW_PAGE");
   },
 };
 </script>

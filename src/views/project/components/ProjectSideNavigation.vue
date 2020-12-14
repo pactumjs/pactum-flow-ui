@@ -13,7 +13,6 @@
             <v-list-item-icon class="mr-4">
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
-
             <v-list-item-content>
               <v-list-item-title class="text-uppercase overline">{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -35,12 +34,12 @@ export default {
         { title: "consumers", icon: "mdi-download-outline" },
         { title: "providers", icon: "mdi-upload-outline" },
       ],
-      selected: [1],
+      selected: [0],
     };
   },
   methods: {
     selectMenu(item) {
-      this.$store.dispatch('LOAD_PROJECT_MENU_PAGE', item);
+      this.$store.dispatch('SELECT_SIDE_MENU_PROJECT_VIEW_PAGE', item);
     }
   }
 };

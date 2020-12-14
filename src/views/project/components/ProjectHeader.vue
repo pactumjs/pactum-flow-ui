@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1 class="h3">
-      {{ name }}
-    </h1>
+    <span class="text-h4">
+      <v-icon color="black" left large>mdi-domain</v-icon>
+      <span >{{ name }}</span>
+    </span>
     <v-divider class="mt-1 mb-1"></v-divider>
   </div>
 </template>

@@ -4,47 +4,21 @@
       <router-link :to="'/projects/' + project._id" tag="span">
         <v-card-title class="pointer pb-0 indigo--text text--darken-4">
           <v-icon color="indigo darken-2" class="mr-2">mdi-domain</v-icon>
-          {{ project.name }}
+          <span class="text-uppercase"> {{ project.name }} </span>
         </v-card-title>
       </router-link>
-      <v-card-text class="pb-0 pt-0">
+      <v-card-text class="pb-0 pt-1">
         <v-container>
           <v-row no-gutters>
-            <v-col cols="12" sm="2" class="ml-5">
-              <div>
-                <v-avatar
+            <v-col v-for="metric in metrics" :key="metric.name" cols="12" sm="2" class="mb-1 mr-1 text-center">
+              <v-avatar
                   color="blue-grey"
                   size="32"
                   class="mb-1 mr-1 darken-4"
                 >
-                  <span class="white--text">{{ project.flows }}</span>
+                  <span class="white--text">{{ metric.count }}</span>
                 </v-avatar>
-                Flows
-              </div>
-            </v-col>
-            <v-col cols="12" sm="2">
-              <div>
-                <v-avatar color="black" size="32" class="mb-1 mr-1">
-                  <span class="white--text">{{ project.consumers }}</span>
-                </v-avatar>
-                Consumers
-              </div>
-            </v-col>
-            <v-col cols="12" sm="2">
-              <div>
-                <v-avatar color="black" size="32" class="mb-1 mr-1">
-                  <span class="white--text">{{ project.providers }}</span>
-                </v-avatar>
-                Providers
-              </div>
-            </v-col>
-            <v-col cols="12" sm="2">
-              <div>
-                <v-avatar color="black" size="32" class="mb-1 mr-1">
-                  <span class="white--text">{{ project.endpoints }}</span>
-                </v-avatar>
-                Endpoints
-              </div>
+                {{ metric.name }}
             </v-col>
           </v-row>
         </v-container>
@@ -57,11 +31,32 @@
 .pointer {
   cursor: pointer;
 }
+.pointer span:hover {
+  text-decoration-line: underline;
+}
 </style>
 
 <script>
 export default {
   name: "ProjectCard",
   props: ["project"],
+  computed: {
+    metrics() {
+      return [
+        {
+          name: "Flows",
+          count: this.project.flows,
+        },
+        {
+          name: "Consumers",
+          count: this.project.consumers,
+        },
+        {
+          name: "Providers",
+          count: this.project.providers,
+        },
+      ];
+    },
+  },
 };
 </script>
