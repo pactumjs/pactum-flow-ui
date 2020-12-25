@@ -18,7 +18,33 @@ const routes = [
   {
     path: '/projects/:id',
     name: 'Project',
-    component: () => import(/* webpackChunkName: "project" */ '../views/project/Project.vue')
+    component: () => import(/* webpackChunkName: "project" */ '../views/project/Project.vue'),
+    children: [
+      {
+        path: '',
+        redirect: 'overview'
+      },
+      {
+        path: 'overview',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Overview.vue')
+      },
+      {
+        path: 'flows',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Flows.vue')
+      },
+      {
+        path: 'Interactions',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Interactions.vue')
+      },
+      {
+        path: 'consumers',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Consumers.vue')
+      },
+      {
+        path: 'providers',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Providers.vue')
+      }
+    ]
   }
 ]
 

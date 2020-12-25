@@ -9,7 +9,7 @@
       <v-divider></v-divider>
       <v-list dense nav>
         <v-list-item-group mandatory v-model="selected" active-class="border">
-          <v-list-item v-for="item in items" :key="item.title" @click="selectMenu(item.title)" class="yellow--text">
+          <v-list-item v-for="item in items" router :to="`/projects/${$route.params.id}/${item.title}`" :key="item.title" class="yellow--text">
             <v-list-item-icon class="mr-4">
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
@@ -30,17 +30,12 @@ export default {
       items: [
         { title: "overview", icon: "mdi-view-dashboard" },
         { title: "flows", icon: "mdi-arrow-decision-outline" },
-        { title: "endpoints", icon: "mdi-elevator" },
+        { title: "interactions", icon: "mdi-swap-horizontal" },
         { title: "consumers", icon: "mdi-download-outline" },
         { title: "providers", icon: "mdi-upload-outline" },
       ],
       selected: [0],
     };
-  },
-  methods: {
-    selectMenu(item) {
-      this.$store.dispatch('SELECT_SIDE_MENU_PROJECT_VIEW_PAGE', item);
-    }
   }
 };
 </script>

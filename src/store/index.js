@@ -6,6 +6,7 @@ import ProjectView from './views/project'
 
 import Projects from './projects'
 import Analysis from './analysis'
+import Interactions from './interactions'
 import Flows from './flows'
 
 Vue.use(Vuex)
@@ -18,6 +19,7 @@ const modules = {
   ProjectView,
   projects: Projects,
   analysis: Analysis,
+  interactions: Interactions,
   flows: Flows
 }
 

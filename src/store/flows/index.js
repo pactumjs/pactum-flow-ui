@@ -24,10 +24,10 @@ const mutations = {
 
 const actions = {
   async [Actions.FETCH_FLOWS_BY_IDS]({ commit }, ids) {
-    const response = await fetch('/api/flow/v1/flows/search', {
+    const response = await fetch('/api/flow/v1/search/flows', {
       method: 'POST',
       body: JSON.stringify({
-        flowIds: ids
+        ids
       }),
       headers: {
         'Content-Type': 'application/json'

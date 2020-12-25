@@ -1,28 +1,40 @@
 <template>
   <div>
     <v-card outlined>
-      <router-link :to="'/projects/' + project._id" tag="span">
-        <v-card-title class="pointer pb-0 indigo--text text--darken-4">
-          <v-icon color="indigo darken-2" class="mr-2">mdi-domain</v-icon>
-          <span class="text-uppercase"> {{ project.name }} </span>
-        </v-card-title>
-      </router-link>
-      <v-card-text class="pb-0 pt-1">
-        <v-container>
-          <v-row no-gutters>
-            <v-col v-for="metric in metrics" :key="metric.name" cols="12" sm="2" class="mb-1 mr-1 text-center">
-              <v-avatar
-                  color="blue-grey"
-                  size="32"
-                  class="mb-1 mr-1 darken-4"
-                >
-                  <span class="white--text">{{ metric.count }}</span>
-                </v-avatar>
-                {{ metric.name }}
+      <v-row no-gutters>
+        <v-col cols="12" sm="1">
+          <v-card flat>
+            <v-card-title>
+              <v-icon color="indigo darken-2">mdi-domain</v-icon>
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="8" class="pt-4">
+          <span class="text-uppercase pointer indigo--text text--darken-4">
+            <router-link :to="'/projects/' + project._id" tag="span">
+              {{ project.name }}
+            </router-link>
+          </span>
+          <v-row no-gutters class="mt-4 mb-2">
+            <div></div>
+            <v-col
+              v-for="metric in metrics"
+              :key="metric.name"
+              cols="12"
+              sm="3"
+              class="mr-8 ml-n8"
+            >
+              <div class="text-center">
+                <span class="text-h4 font-weight-bold">{{ metric.count }}</span>
+                <br />
+                <v-icon small class="mx-1">{{ metric.icon }}</v-icon>
+                <span class="grey--text">{{ metric.name }}</span>
+              </div>
             </v-col>
           </v-row>
-        </v-container>
-      </v-card-text>
+        </v-col>
+        <v-col cols="12" sm="3"></v-col>
+      </v-row>
     </v-card>
   </div>
 </template>
@@ -46,14 +58,22 @@ export default {
         {
           name: "Flows",
           count: this.project.flows,
+          icon: "mdi-arrow-decision-outline",
         },
         {
           name: "Consumers",
           count: this.project.consumers,
+          icon: "mdi-download-outline",
         },
         {
           name: "Providers",
           count: this.project.providers,
+          icon: "mdi-upload-outline",
+        },
+        {
+          name: "Interactions",
+          count: this.project.interactions,
+          icon: "mdi-swap-horizontal",
         },
       ];
     },
