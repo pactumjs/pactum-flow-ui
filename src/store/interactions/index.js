@@ -13,7 +13,10 @@ const getters = {
   getInteractionsByIds: (state) => (ids) => {
     const set = new Set(ids);
     return state.interactions.filter(_interaction => set.has(_interaction._id));
-  }
+  },
+  getInteractionsByAnalysisId: (state) => (id) => {
+    return state.interactions.filter(_interaction => _interaction.analysisId === id);
+  },
 }
 
 const mutations = {
@@ -23,12 +26,9 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_INTERACTIONS_BY_IDS]({ commit }, ids) {
-    const response = await fetch('/api/flow/v1/search/interactions', {
-      method: 'POST',
-      body: JSON.stringify({
-        ids
-      }),
+  async [Actions.FETCH_INTERACTIONS_BY_ANALYSIS_ID]({ commit }, id) {
+    const response = await fetch(`/api/flow/v1/interactions?analysisId=${id}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }

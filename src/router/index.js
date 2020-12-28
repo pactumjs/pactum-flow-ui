@@ -33,7 +33,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Flows.vue')
       },
       {
-        path: 'Interactions',
+        path: 'interactions',
         component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Interactions.vue')
       },
       {

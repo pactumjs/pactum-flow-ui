@@ -14,9 +14,14 @@
           </v-col>
         </v-row>
       </v-container>
-      
     </div>
-    <div v-else>Project Not Found</div>
+    <div v-else>
+      <v-container class="text-center my-10">
+        <v-icon x-large>mdi-magnify-remove-outline</v-icon>
+        <br>
+        <span class="text-h4 my-4">Project Not Found</span>
+      </v-container>
+    </div>
   </div>
 </template>
 

@@ -49,39 +49,36 @@ export default {
       let metrics = [];
       const ids = this.project.analysis.main;
       if (ids.length > 0) {
-        const analysis = this.$store.getters.getAnalysisById(ids[ids.length - 1]);
-        const analysisMetrics = this.$store.getters.getAnalysisMetricsById(ids[ids.length - 1]);
-        const flowMetric = analysisMetrics.metrics.find(metric => metric.name === 'Flows');
+        const flows = this.$store.getters.getFlowsByAnalysisId(ids[ids.length - 1]);
+        const interactions = this.$store.getters.getInteractionsByAnalysisId(ids[ids.length - 1]);
+        const am = this.$store.getters.getAnalysisMetricsById(ids[ids.length - 1]);
         metrics.push({
           name: 'Flows',
           icon: 'mdi-arrow-decision-outline',
-          total: analysis.flows.length,
-          new: flowMetric.new.length,
-          removed: flowMetric.removed.length
+          total: flows.length,
+          new: am.flows.new.length,
+          removed: am.flows.removed.length
         });
-        const interactionMetric = analysisMetrics.metrics.find(metric => metric.name === 'Interactions');
         metrics.push({
           name: 'Interactions',
           icon: 'mdi-swap-horizontal',
-          total: analysis.interactions.length,
-          new: interactionMetric.new.length,
-          removed: interactionMetric.removed.length
+          total: interactions.length,
+          new: am.interactions.new.length,
+          removed: am.interactions.removed.length
         });
-        const consumerMetric = analysisMetrics.metrics.find(metric => metric.name === 'Consumers');
         metrics.push({
           name: 'Consumers',
           icon: 'mdi-download-outline',
-          total: analysis.consumers.length,
-          new: consumerMetric.new.length,
-          removed: consumerMetric.removed.length
+          total: am.consumers.total.length,
+          new: am.consumers.new.length,
+          removed: am.consumers.removed.length
         });
-        const providerMetric = analysisMetrics.metrics.find(metric => metric.name === 'Providers');
         metrics.push({
           name: 'Providers',
           icon: 'mdi-upload-outline',
-          total: analysis.providers.length,
-          new: providerMetric.new.length,
-          removed: providerMetric.removed.length
+          total: am.providers.total.length,
+          new: am.providers.new.length,
+          removed: am.providers.removed.length
         });
       }
       return metrics;

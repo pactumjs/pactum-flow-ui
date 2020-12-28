@@ -36,10 +36,9 @@ const actions = {
       // analysis not found error.
       return;
     }
-    // dynamically load flows
-    await dispatch(Actions.FETCH_FLOWS_BY_IDS, analysis.flows);
-    // dynamically load interactions
-    await dispatch(Actions.FETCH_INTERACTIONS_BY_IDS, analysis.interactions);
+    const flowPromise = dispatch(Actions.FETCH_FLOWS_BY_ANALYSIS_ID, analysis._id);
+    const interactionPromise = dispatch(Actions.FETCH_INTERACTIONS_BY_ANALYSIS_ID, analysis._id);
+    await Promise.all([ flowPromise, interactionPromise ]);
   }
 }
 
