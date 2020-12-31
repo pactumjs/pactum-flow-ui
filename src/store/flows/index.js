@@ -7,7 +7,7 @@ const state = () => {
 }
 
 const getters = {
-  getFlowsById: (state) => (id) => {
+  getFlowById: (state) => (id) => {
     return state.flows.find(_flow => _flow._id === id);
   },
   getFlowsByIds: (state) => (ids) => {
@@ -22,6 +22,9 @@ const getters = {
 const mutations = {
   [Mutations.ADD_FLOWS](state, flows) {
     state.flows = flows;
+  },
+  [Mutations.ADD_FLOW](state, flow) {
+    state.flows.push(flow);
   }
 };
 
@@ -34,6 +37,15 @@ const actions = {
       }
     });
     commit(Mutations.ADD_FLOWS, await response.json());
+  },
+  async [Actions.FETCH_FLOW_BY_ID]({ commit }, id) {
+    const response = await fetch(`/api/flow/v1/flows/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    commit(Mutations.ADD_FLOW, await response.json());
   }
 }
 

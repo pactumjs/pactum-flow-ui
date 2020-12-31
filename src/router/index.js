@@ -45,6 +45,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Providers.vue')
       }
     ]
+  },
+  {
+    path: '/flows/:id',
+    name: 'Flow',
+    component: () => import(/* webpackChunkName: "flows" */ '../views/flow/FlowPage.vue'),
   }
 ]
 

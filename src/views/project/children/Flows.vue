@@ -7,7 +7,8 @@
           Flows
         </v-subheader>
         <v-divider></v-divider>
-        <v-list-item v-for="flow in flows" :key="flow.name">
+        <v-list-item v-for="flow in flows" :key="flow.name" router
+          :to="`/flows/${flow.id}`">
           <v-list-item-action style="width: 40px">
             <v-list-item-action-text
               v-text="flow.method"
@@ -58,6 +59,7 @@ export default {
       raws.forEach((raw) => {
         const items = raw.info.split("::");
         _flows.push({
+          id: raw._id,
           name: raw.name,
           method: items[0],
           endpoint: items[1],

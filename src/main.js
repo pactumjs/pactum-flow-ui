@@ -12,3 +12,9 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+import VuePrism from 'vue-prism'
+Vue.use(VuePrism)
+
+import 'prismjs/components/prism-json'
+import 'prismjs/themes/prism.css'
