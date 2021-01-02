@@ -7,7 +7,7 @@
             <v-card outlined class="text-center">
               <v-card-title>
                 <v-icon small left>{{ metric.icon }}</v-icon>
-                {{ metric.total }}
+                {{ metric.all }}
                 <span class="overline ml-4">{{ metric.name }}</span>
               </v-card-title>
             </v-card>
@@ -47,36 +47,34 @@ export default {
     },
     metrics() {
       let metrics = [];
-      const ids = this.project.analysis.main;
-      if (ids.length > 0) {
-        const flows = this.$store.getters.getFlowsByAnalysisId(ids[ids.length - 1]);
-        const interactions = this.$store.getters.getInteractionsByAnalysisId(ids[ids.length - 1]);
-        const am = this.$store.getters.getAnalysisMetricsById(ids[ids.length - 1]);
+      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+      const am = this.$store.getters.getAnalysisMetricsById(aid);
+      if (aid && am) {
         metrics.push({
           name: 'Flows',
           icon: 'mdi-arrow-decision-outline',
-          total: flows.length,
+          all: am.flows.all.length,
           new: am.flows.new.length,
           removed: am.flows.removed.length
         });
         metrics.push({
           name: 'Interactions',
           icon: 'mdi-swap-horizontal',
-          total: interactions.length,
+          all: am.interactions.all.length,
           new: am.interactions.new.length,
           removed: am.interactions.removed.length
         });
         metrics.push({
           name: 'Consumers',
           icon: 'mdi-download-outline',
-          total: am.consumers.total.length,
+          all: am.consumers.all.length,
           new: am.consumers.new.length,
           removed: am.consumers.removed.length
         });
         metrics.push({
           name: 'Providers',
           icon: 'mdi-upload-outline',
-          total: am.providers.total.length,
+          all: am.providers.all.length,
           new: am.providers.new.length,
           removed: am.providers.removed.length
         });

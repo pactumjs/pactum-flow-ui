@@ -13,12 +13,12 @@ const routes = [
   {
     path: '/projects',
     name: 'Projects',
-    component: () => import(/* webpackChunkName: "projects" */ '../views/projects/Projects.vue')
+    component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue')
   },
   {
     path: '/projects/:id',
     name: 'Project',
-    component: () => import(/* webpackChunkName: "project" */ '../views/project/Project.vue'),
+    component: () => import(/* webpackChunkName: "project" */ '../views/project/ProjectPage.vue'),
     children: [
       {
         path: '',
@@ -26,23 +26,23 @@ const routes = [
       },
       {
         path: 'overview',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Overview.vue')
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectOverview.vue')
       },
       {
         path: 'flows',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Flows.vue')
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectFlows.vue')
       },
       {
         path: 'interactions',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Interactions.vue')
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectInteractions.vue')
       },
       {
         path: 'consumers',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Consumers.vue')
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectConsumers.vue')
       },
       {
         path: 'providers',
-        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/Providers.vue')
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectProviders.vue')
       }
     ]
   },

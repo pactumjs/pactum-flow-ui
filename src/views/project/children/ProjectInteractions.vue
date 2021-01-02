@@ -33,17 +33,9 @@ export default {
       const projectId = this.$route.params.id;
       return this.$store.getters.getProjectById(projectId);
     },
-    analysis() {
-      const ids = this.project.analysis.main;
-      if (ids.length > 0) {
-        return this.$store.getters.getAnalysisById(ids[ids.length - 1]);
-      }
-      return null;
-    },
     interactions() {
-      return this.$store.getters.getInteractionsByIds(
-        this.analysis.interactions
-      );
+      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+      return this.$store.getters.getInteractionsByAnalysisId(aid);
     },
   },
 };

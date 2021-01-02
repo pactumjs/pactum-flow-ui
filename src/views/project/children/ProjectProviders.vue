@@ -35,15 +35,10 @@ export default {
       const projectId = this.$route.params.id;
       return this.$store.getters.getProjectById(projectId);
     },
-    analysis() {
-      const ids = this.project.analysis.main;
-      if (ids.length > 0) {
-        return this.$store.getters.getAnalysisById(ids[ids.length - 1]);
-      }
-      return null;
-    },
     providers() {
-      return this.analysis.providers;
+      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+      const am = this.$store.getters.getAnalysisMetricsById(aid);
+      return am.providers.all;
     },
   },
 };

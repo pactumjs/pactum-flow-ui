@@ -6,29 +6,22 @@
       <v-card-subtitle class="font-weight-bold">
         <span :class="`${request.method} text-overline font-weight-bold`"> {{ request.method }} </span> {{ request.path }}
       </v-card-subtitle>
-
-      <div v-if="request.body">
-        <v-card-actions class="mt-n4">
-          <v-btn color="orange darken-2" text> BODY </v-btn>
-          <v-spacer></v-spacer>
-          <v-btn icon @click="show = !show">
-            <v-icon>{{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
-          </v-btn>
-        </v-card-actions>
-        <ExpansionPanel :show="show" :payload="request.body"/>
-      </div>
+      <CodeExpansionPanel text="PATH PARAMS" :code="request.pathParams"/>
+      <CodeExpansionPanel text="QUERY PARAMS" :code="request.queryParams"/>
+      <CodeExpansionPanel text="HEADERS" :code="request.headers"/>
+      <CodeExpansionPanel text="BODY" :code="request.body"/>
     </v-card>
   </div>
 </template>
 
 <script>
-import ExpansionPanel from './ExpansionPanel';
+import CodeExpansionPanel from './CodeExpansionPanel';
 
 export default {
   name: "FlowRequestCard",
   props: ["request"],
   components: {
-    ExpansionPanel
+    CodeExpansionPanel
   },
   data: () => ({
     show: false,

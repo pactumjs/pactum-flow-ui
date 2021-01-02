@@ -33,7 +33,15 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" sm="3"></v-col>
+        <v-col cols="12" sm="3" class="mt-auto">
+          <v-card flat>
+            <v-card-subtitle>
+              <span> Last Analysis </span>
+              <br />
+              <span class="text-caption font-weight-bold">{{ (new Date(analysis.createdAt)).toUTCString() }}</span>
+            </v-card-subtitle>
+          </v-card>
+        </v-col>
       </v-row>
     </v-card>
   </div>
@@ -53,26 +61,33 @@ export default {
   name: "ProjectCard",
   props: ["project"],
   computed: {
+    analysis() {
+      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment(
+        "latest",
+        this.project._id
+      );
+      return this.$store.getters.getAnalysisById(aid);
+    },
     metrics() {
       return [
         {
           name: "Flows",
-          count: this.project.flows,
+          count: this.analysis.flows,
           icon: "mdi-arrow-decision-outline",
         },
         {
           name: "Consumers",
-          count: this.project.consumers,
+          count: this.analysis.consumers,
           icon: "mdi-download-outline",
         },
         {
           name: "Providers",
-          count: this.project.providers,
+          count: this.analysis.providers,
           icon: "mdi-upload-outline",
         },
         {
           name: "Interactions",
-          count: this.project.interactions,
+          count: this.analysis.interactions,
           icon: "mdi-swap-horizontal",
         },
       ];

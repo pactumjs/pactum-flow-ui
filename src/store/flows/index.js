@@ -38,14 +38,16 @@ const actions = {
     });
     commit(Mutations.ADD_FLOWS, await response.json());
   },
-  async [Actions.FETCH_FLOW_BY_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/flows/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    commit(Mutations.ADD_FLOW, await response.json());
+  async [Actions.FETCH_FLOW_BY_ID]({ getters, commit }, id) {
+    if (!getters.getFlowById(id)) {
+      const response = await fetch(`/api/flow/v1/flows/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      commit(Mutations.ADD_FLOW, await response.json());
+    }
   }
 }
 

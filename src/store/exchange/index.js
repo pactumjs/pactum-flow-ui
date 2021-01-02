@@ -27,13 +27,17 @@ const mutations = {
 
 
 const actions = {
-  async [Actions.FETCH_REQUEST_BY_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/requests/${id}`);
-    commit(Mutations.ADD_REQUEST, await response.json());
+  async [Actions.FETCH_REQUEST_BY_ID]({ getters, commit }, id) {
+    if (!getters.getRequestById(id)) {
+      const response = await fetch(`/api/flow/v1/requests/${id}`);
+      commit(Mutations.ADD_REQUEST, await response.json());
+    }
   },
-  async [Actions.FETCH_RESPONSE_BY_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/responses/${id}`);
-    commit(Mutations.ADD_RESPONSE, await response.json());
+  async [Actions.FETCH_RESPONSE_BY_ID]({ getters, commit }, id) {
+    if (!getters.getResponseById(id)) {
+      const response = await fetch(`/api/flow/v1/responses/${id}`);
+      commit(Mutations.ADD_RESPONSE, await response.json());
+    }
   },
 }
 

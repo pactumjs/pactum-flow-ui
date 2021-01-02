@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="project && analysis">
+    <div v-if="isProjectLoading">
+      <LoadingSpinner />
+    </div>
+    <div v-else-if="project && analysis">
       <v-container>
         <ProjectHeader :name="project.name" />
       </v-container>
@@ -26,30 +29,35 @@
 </template>
 
 <script>
+import LoadingSpinner from "../../components/LoadingSpinner";
 import ProjectHeader from "./components/ProjectHeader";
 import ProjectSideNavigation from "./components/ProjectSideNavigation";
 
 export default {
   name: "Project",
   components: {
+    LoadingSpinner,
     ProjectHeader,
     ProjectSideNavigation,
   },
   computed: {
+    isProjectLoading() {
+      return this.$store.state.ProjectPageView.loadingProject;
+    },
     project() {
       return this.$store.getters.getProjectById(this.$route.params.id);
     },
     analysis() {
       if (this.project) {
-        const ids = this.project.analysis.main;
-        return this.$store.getters.getAnalysisById(ids[ids.length - 1]);
+        const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+        return this.$store.getters.getAnalysisById(aid);
       } else {
         return null;
       }
     },
   },
   created() {
-    this.$store.dispatch("LOAD_PROJECT_VIEW_PAGE", this.$route.params.id);
+    this.$store.dispatch("LOAD_PROJECT_PAGE_VIEW", this.$route.params.id);
   },
 };
 </script>
