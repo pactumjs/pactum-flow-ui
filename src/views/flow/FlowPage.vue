@@ -13,10 +13,10 @@
         <p class="text-h5 text-center font-weight-bold">{{ flow.projectId }}</p>
         <v-timeline>
           <v-timeline-item left icon="mdi-arrow-right">
-            <FlowRequestCard :request="request" />
+            <RequestCard :request="request" />
           </v-timeline-item>
           <v-timeline-item left icon="mdi-arrow-left">
-            <FlowResponseCard :response="response" />
+            <ResponseCard :response="response" />
           </v-timeline-item>
         </v-timeline>
       </v-container>
@@ -26,15 +26,15 @@
 
 <script>
 import LoadingSpinner from "../../components/LoadingSpinner";
-import FlowRequestCard from "./components/FlowRequestCard";
-import FlowResponseCard from "./components/FlowResponseCard";
+import RequestCard from "../../components/RequestCard";
+import ResponseCard from "../../components/ResponseCard";
 
 export default {
   name: "FlowPage",
   components: {
     LoadingSpinner,
-    FlowRequestCard,
-    FlowResponseCard,
+    RequestCard,
+    ResponseCard,
   },
   computed: {
     isFlowLoading() {

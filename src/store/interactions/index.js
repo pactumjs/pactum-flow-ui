@@ -22,6 +22,9 @@ const getters = {
 const mutations = {
   [Mutations.ADD_INTERACTIONS](state, interactions) {
     state.interactions = interactions;
+  },
+  [Mutations.ADD_INTERACTION](state, interaction) {
+    state.interactions.push(interaction);
   }
 };
 
@@ -34,6 +37,17 @@ const actions = {
       }
     });
     commit(Mutations.ADD_INTERACTIONS, await response.json());
+  },
+  async [Actions.FETCH_INTERACTION_BY_ID]({ getters, commit }, id) {
+    if (!getters.getInteractionById(id)) {
+      const response = await fetch(`/api/flow/v1/interactions/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      commit(Mutations.ADD_INTERACTION, await response.json());
+    }
   }
 }
 

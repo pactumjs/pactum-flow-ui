@@ -4,7 +4,7 @@
       <v-list>
         <v-subheader>Interactions</v-subheader>
         <v-divider></v-divider>
-        <v-list-item v-for="interaction in interactions" :key="interaction">
+        <v-list-item v-for="interaction in interactions" :key="interaction._id" router :to="`/interactions/${interaction._id}`">
           <v-list-item-content>
             <v-list-item-title>{{ interaction.flow }}</v-list-item-title>
             <v-list-item-subtitle>{{

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="analysis">
     <v-card outlined>
       <v-row no-gutters>
         <v-col cols="12" sm="1">

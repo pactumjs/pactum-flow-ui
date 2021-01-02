@@ -50,6 +50,11 @@ const routes = [
     path: '/flows/:id',
     name: 'Flow',
     component: () => import(/* webpackChunkName: "flows" */ '../views/flow/FlowPage.vue'),
+  },
+  {
+    path: '/interactions/:id',
+    name: 'Interaction',
+    component: () => import(/* webpackChunkName: "interactions" */ '../views/interaction/InteractionPage.vue'),
   }
 ]
 
