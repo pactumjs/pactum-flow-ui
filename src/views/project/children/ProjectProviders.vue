@@ -2,7 +2,7 @@
   <div>
     <div v-if="providers && providers.length > 0">
       <v-list>
-        <v-subheader>Providers</v-subheader>
+        <ListHeader text="Providers" icon="mdi-upload-outline"/>
         <v-divider></v-divider>
         <v-list-item
           v-for="provider in providers"
@@ -24,11 +24,13 @@
 
 <script>
 import NoItems from "../components/NoItems";
+import ListHeader from '../components/ListHeader';
 
 export default {
   name: "ProjectProviders",
   components: {
     NoItems,
+    ListHeader,
   },
   computed: {
     project() {

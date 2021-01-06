@@ -41,7 +41,7 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("LOAD_INTERACTION_PAGE_VIEW", this.id);
+    this.$store.dispatch("LOAD_INTERACTION_PAGE_VIEW", this.$route.params.id);
   },
 };
 </script>

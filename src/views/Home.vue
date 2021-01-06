@@ -24,7 +24,7 @@
         <v-btn
           dark
           x-large
-          href="https://github.com/ASaiAnudeep/pactum"
+          href="https://github.com/pactumjs/pactum"
           target="_blank"
           class="yellow--text ml-2"
         >

@@ -8,7 +8,7 @@
       </v-card-subtitle>
       <CodeExpansionPanel text="HEADERS" :code="response.headers" />
       <CodeExpansionPanel text="BODY" :code="response.body" />
-      <CodeExpansionPanel text="MATCHING RULES" :code="response.matchingRules" />
+      <CodeExpansionPanel text="MATCHING RULES" :code="rules" />
     </v-card>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
   props: ["response"],
   components: {
     CodeExpansionPanel,
+  },
+  computed: {
+    rules() {
+      const _rules = this.response.matchingRules;
+      return _rules ? JSON.parse(_rules) : _rules;
+    }
   },
   data: () => ({
     show: false,

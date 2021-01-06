@@ -1,45 +1,21 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col cols="12" sm="12">
-        <v-row v-for="metric in metrics" :key="metric.name">
-          <v-col cols="12" sm="4">
-            <v-card outlined class="text-center">
-              <v-card-title>
-                <v-icon small left>{{ metric.icon }}</v-icon>
-                {{ metric.all }}
-                <span class="overline ml-4">{{ metric.name }}</span>
-              </v-card-title>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card outlined class="text-center" color="yellow lighten-5">
-              <v-card-title>
-                <v-icon small left>{{ metric.icon }}</v-icon>
-                {{ metric.new }}
-                <span class="overline ml-4">new</span>
-              </v-card-title>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="3">
-            <v-card outlined class="text-center" color="red lighten-5">
-              <v-card-title>
-                <v-icon small left>{{ metric.icon }}</v-icon>
-                {{ metric.removed }}
-                <span class="overline ml-4">removed</span>
-              </v-card-title>
-            </v-card>
-          </v-col>
-        </v-row>
+      <v-col class="px-2" cols="12" sm="3" v-for="metric in metrics" :key="metric.name">
+        <MetricCard :metric="metric" />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import MetricCard from '../components/MetricCard';
 
 export default {
   name: "ProjectOverview",
+  components: {
+    MetricCard
+  },
   computed: {
     project() {
       const projectId = this.$route.params.id;

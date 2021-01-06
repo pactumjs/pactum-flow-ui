@@ -2,7 +2,7 @@
   <div>
     <div v-if="consumers && consumers.length > 0">
       <v-list>
-        <v-subheader>Consumers</v-subheader>
+        <ListHeader text="Consumers" icon="mdi-download-outline"/>
         <v-divider></v-divider>
         <v-list-item
           v-for="consumer in consumers"
@@ -24,11 +24,13 @@
 
 <script>
 import NoItems from "../components/NoItems";
+import ListHeader from '../components/ListHeader';
 
 export default {
   name: "ProjectConsumers",
   components: {
     NoItems,
+    ListHeader,
   },
   computed: {
     project() {

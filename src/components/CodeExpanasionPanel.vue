@@ -1,7 +1,7 @@
 <template>
   <div v-if="code">
     <v-card-actions class="mt-n4">
-      <v-btn color="orange darken-2" text> {{ text }} </v-btn>
+      <v-btn color="orange darken-2" text @click="show = !show"> {{ text }} </v-btn>
       <v-spacer></v-spacer>
       <v-btn icon @click="show = !show">
         <v-icon>{{

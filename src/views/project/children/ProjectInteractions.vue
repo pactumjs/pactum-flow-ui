@@ -2,16 +2,9 @@
   <div>
     <div v-if="interactions && interactions.length > 0">
       <v-list>
-        <v-subheader>Interactions</v-subheader>
+        <ListHeader text="Interactions" icon="mdi-swap-horizontal"/>
         <v-divider></v-divider>
-        <v-list-item v-for="interaction in interactions" :key="interaction._id" router :to="`/interactions/${interaction._id}`">
-          <v-list-item-content>
-            <v-list-item-title>{{ interaction.flow }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              interaction.provider
-            }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+        <ListItems :items="interactions" path="interactions"/>
       </v-list>
     </div>
     <div v-else>
@@ -22,11 +15,15 @@
 
 <script>
 import NoItems from "../components/NoItems";
+import ListHeader from '../components/ListHeader';
+import ListItems from '../components/ListItems';
 
 export default {
   name: "ProjectInteractions",
   components: {
     NoItems,
+    ListItems,
+    ListHeader,
   },
   computed: {
     project() {
@@ -35,7 +32,9 @@ export default {
     },
     interactions() {
       const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
-      return this.$store.getters.getInteractionsByAnalysisId(aid);
+      const items = this.$store.getters.getInteractionsByAnalysisId(aid);
+      items.forEach(item => item.name = item.flow);
+      return items;
     },
   },
 };
