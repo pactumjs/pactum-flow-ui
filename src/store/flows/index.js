@@ -2,7 +2,8 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
-    flows: []
+    flows: [],
+    loadedAnalyses: []
   }
 }
 
@@ -21,22 +22,28 @@ const getters = {
 
 const mutations = {
   [Mutations.ADD_FLOWS](state, flows) {
-    state.flows = flows;
+    state.flows = state.flows.concat(flows);
   },
   [Mutations.ADD_FLOW](state, flow) {
     state.flows.push(flow);
-  }
+  },
+  [Mutations.ADD_ANALYSIS_TO_LOADED_FLOWS](state, id) {
+    state.loadedAnalyses.push(id);
+  },
 };
 
 const actions = {
-  async [Actions.FETCH_FLOWS_BY_ANALYSIS_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/flows?analysisId=${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    commit(Mutations.ADD_FLOWS, await response.json());
+  async [Actions.FETCH_FLOWS_BY_ANALYSIS_ID]({ commit, state }, id) {
+    if (!state.loadedAnalyses.includes(id)) {
+      const response = await fetch(`/api/flow/v1/flows?analysisId=${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      commit(Mutations.ADD_FLOWS, await response.json());
+      commit(Mutations.ADD_ANALYSIS_TO_LOADED_FLOWS, id);
+    }
   },
   async [Actions.FETCH_FLOW_BY_ID]({ getters, commit }, id) {
     if (!getters.getFlowById(id)) {

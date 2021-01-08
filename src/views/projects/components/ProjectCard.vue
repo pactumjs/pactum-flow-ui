@@ -33,12 +33,17 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" sm="3" class="mt-auto">
+        <v-divider vertical class="ml-n1"></v-divider>
+        <v-col cols="12" sm="3" class="mt-auto pl-n1">
           <v-card flat>
             <v-card-subtitle>
-              <span> Last Analysis </span>
+              <span> Version </span>
               <br />
-              <span class="text-caption font-weight-bold">{{ (new Date(analysis.createdAt)).toUTCString() }}</span>
+              <span class="text-caption font-weight-bold">{{ analysis.version }}</span>
+              <br />
+              <span class="pt-2"> Last Analysis </span>
+              <br />
+              <span class="text-caption font-weight-bold">{{ date }}</span>
             </v-card-subtitle>
           </v-card>
         </v-col>
@@ -91,6 +96,9 @@ export default {
           icon: "mdi-swap-horizontal",
         },
       ];
+    },
+    date() {
+      return new Date(this.analysis.createdAt).toLocaleString("en-CA");
     },
   },
 };

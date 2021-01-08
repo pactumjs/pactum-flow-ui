@@ -2,7 +2,8 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
-    interactions: []
+    interactions: [],
+    loadedAnalyses: []
   }
 }
 
@@ -21,22 +22,28 @@ const getters = {
 
 const mutations = {
   [Mutations.ADD_INTERACTIONS](state, interactions) {
-    state.interactions = interactions;
+    state.interactions = state.interactions.concat(interactions);
   },
   [Mutations.ADD_INTERACTION](state, interaction) {
     state.interactions.push(interaction);
+  },
+  [Mutations.ADD_ANALYSIS_TO_LOADED_INTERACTIONS](state, id) {
+    state.loadedAnalyses.push(id);
   }
 };
 
 const actions = {
-  async [Actions.FETCH_INTERACTIONS_BY_ANALYSIS_ID]({ commit }, id) {
-    const response = await fetch(`/api/flow/v1/interactions?analysisId=${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    commit(Mutations.ADD_INTERACTIONS, await response.json());
+  async [Actions.FETCH_INTERACTIONS_BY_ANALYSIS_ID]({ commit, state }, id) {
+    if (!state.loadedAnalyses.includes(id)) {
+      const response = await fetch(`/api/flow/v1/interactions?analysisId=${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      commit(Mutations.ADD_INTERACTIONS, await response.json());
+      commit(Mutations.ADD_ANALYSIS_TO_LOADED_INTERACTIONS, id);
+    }
   },
   async [Actions.FETCH_INTERACTION_BY_ID]({ getters, commit }, id) {
     if (!getters.getInteractionById(id)) {
