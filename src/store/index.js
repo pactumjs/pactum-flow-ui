@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
 
 import ProjectsPageView from './views/projects'
 import ProjectPageView from './views/project'
@@ -12,6 +13,7 @@ import Analyses from './analyses'
 import Interactions from './interactions'
 import Flows from './flows'
 import Exchange from './exchange'
+import Auth from './auth'
 
 Vue.use(Vuex)
 
@@ -19,6 +21,7 @@ const state = {}
 const mutations = {}
 const actions = {}
 const modules = {
+  Auth,
   ProjectsPageView,
   ProjectPageView,
   FlowPageView,
@@ -35,5 +38,6 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
-  modules
+  modules,
+  plugins: [createPersistedState()]
 })
