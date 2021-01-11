@@ -1,20 +1,21 @@
-const { addMockInteractionHandler } = require('pactum').handler;
+const { addInteractionHandler } = require('pactum').handler;
 
-addMockInteractionHandler('get project pid1', () => {
+addInteractionHandler('get projects', () => {
   return {
-    withRequest: {
+    request: {
       method: 'GET',
-      path: '/api/flow/v1/projects/pid1'
+      path: '/api/flow/v1/projects'
     },
-    willRespondWith: {
+    response: {
       status: 200,
-      body: {
-        _id: 'pid1',
-        name: '[AVG] project-mars',
-        analysis: {
-          main: ['aid1', 'aid2']
+      body: [
+        {
+          "_id": "pactum_flow-api",
+          "name": "[PACTUM] flow-api",
+          "createdAt": "2021-01-03T06:37:55.758Z",
+          "__v": 0
         }
-      }
+      ]
     }
   }
 });

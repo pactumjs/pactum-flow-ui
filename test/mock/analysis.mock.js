@@ -1,6 +1,6 @@
-const { addMockInteractionHandler } = require('pactum').handler;
+const { addInteractionHandler } = require('pactum').handler;
 
-addMockInteractionHandler('get analysis aid2', () => {
+addInteractionHandler('get analysis aid2', () => {
   return {
     withRequest: {
       method: 'GET',

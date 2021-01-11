@@ -1,13 +1,13 @@
 const { mock } = require('pactum');
 
-require('./metrics.mock');
+require('./environment.mock');
 require('./projects.mock');
-require('./analysis.mock');
 require('./search.mock');
+require('./metrics.mock');
 
-mock.addMockInteraction('get metrics');
-mock.addMockInteraction('get project pid1');
-mock.addMockInteraction('get analysis aid2');
-mock.addMockInteraction('search flows');
+mock.addInteraction('get environments');
+mock.addInteraction('get projects');
+mock.addInteraction('search analyses');
+mock.addInteraction('get analyses metrics');
 
 mock.start(3000);
