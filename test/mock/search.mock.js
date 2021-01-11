@@ -1,79 +1,31 @@
-const { addMockInteractionHandler } = require('pactum').handler;
+const { addInteractionHandler } = require('pactum').handler;
 
-addMockInteractionHandler('search flows', () => {
+addInteractionHandler('search analyses', () => {
   return {
-    withRequest: {
+    request: {
       method: 'POST',
-      path: '/api/flow/v1/flows/search'
+      path: '/api/flow/v1/search/analyses',
+      body: {
+        "ids": [
+          "5ff16643d9729c27c09447a0"
+        ]
+      }
     },
-    willRespondWith: {
+    response: {
       status: 200,
       body: [
         {
-          _id: 'fid1',
-          name: 'get all users',
-          request: {
-            method: 'GET',
-            path: '/api/users'
-          },
-          response: {
-            statusCode: 200
-          }
-        },
-        {
-          _id: 'fid2',
-          name: 'post a user',
-          request: {
-            method: 'POST',
-            path: '/api/user/{userId}'
-          },
-          response: {
-            statusCode: 200
-          }
-        },
-        {
-          _id: 'fid3',
-          name: 'delete a non-existent user',
-          request: {
-            method: 'DELETE',
-            path: '/api/user/{userId}'
-          },
-          response: {
-            statusCode: 400
-          }
-        },
-        {
-          _id: 'fid4',
-          name: 'partial update an existing user',
-          request: {
-            method: 'PUT',
-            path: '/api/user/{userId}'
-          },
-          response: {
-            statusCode: 400
-          }
-        },
-        {
-          _id: 'fid5',
-          name: 'update a existing user',
-          request: {
-            method: 'PATCH',
-            path: '/api/user/{userId}'
-          },
-          response: {
-            statusCode: 400
-          }
-        },
-        {
-          _id: 'fid5',
-          name: 'update a existing user one more time',
-          request: {
-            method: 'PATCH',
-            path: '/api/user/{userId}'
-          },
-          response: {
-            statusCode: 200
-          }
+          "branch": "main",
+          "version": "1.0.1",
+          "processed": true,
+          "interactions": 1,
+          "flows": 17,
+          "providers": 1,
+          "consumers": 0,
+          "_id": "5ff16643d9729c27c09447a0",
+          "projectId": "pactum_flow-api",
+          "createdAt": "2021-01-03T06:37:55.766Z",
+          "__v": 0
         }
       ]
     }
