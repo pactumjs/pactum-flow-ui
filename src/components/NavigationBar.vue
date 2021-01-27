@@ -8,6 +8,7 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items >
+      <v-btn class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
       <v-btn class="yellow--text overline" :to="'/projects'" text> Projects </v-btn>
     </v-toolbar-items>
   </v-app-bar>
