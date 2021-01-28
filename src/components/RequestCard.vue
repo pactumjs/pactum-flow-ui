@@ -12,7 +12,7 @@
       <CodeExpansionPanel text="QUERY PARAMS" :code="request.queryParams" />
       <CodeExpansionPanel text="HEADERS" :code="request.headers" />
       <CodeExpansionPanel text="BODY" :code="request.body" />
-      <CodeExpansionPanel text="MATCHING RULES" :code="rules" />
+      <CodeExpansionPanel text="MATCHING RULES" :code="request.matchingRules" />
     </v-card>
   </div>
 </template>
@@ -25,12 +25,6 @@ export default {
   props: ["request"],
   components: {
     CodeExpansionPanel,
-  },
-  computed: {
-    rules() {
-      const _rules = this.request.matchingRules;
-      return _rules ? JSON.parse(_rules) : _rules;
-    }
   },
   data: () => ({
     show: false,
