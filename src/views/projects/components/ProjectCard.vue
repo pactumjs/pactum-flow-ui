@@ -10,7 +10,7 @@
           </v-card>
         </v-col>
         <v-col cols="12" sm="8" class="pt-4">
-          <span class="text-uppercase pointer indigo--text text--darken-4">
+          <span class="pointer indigo--text text--darken-4">
             <router-link :to="'/projects/' + project._id" tag="span">
               {{ project.name }}
             </router-link>
@@ -39,11 +39,11 @@
             <v-card-subtitle>
               <span> Version </span>
               <br />
-              <span class="text-caption font-weight-bold">{{ analysis.version }}</span>
+              <span class="text-caption black--text font-weight-bold">{{ analysis.version }}</span>
               <br />
               <span class="pt-2"> Last Analysis </span>
               <br />
-              <span class="text-caption font-weight-bold">{{ date }}</span>
+              <span class="text-caption black--text font-weight-bold">{{ date }}</span>
             </v-card-subtitle>
           </v-card>
         </v-col>
@@ -62,16 +62,16 @@
 </style>
 
 <script>
+import rd from 'tiny-relative-date';
 export default {
   name: "ProjectCard",
   props: ["project"],
   computed: {
+    aid() {
+      return this.$store.getters.getProjectAnalysisIdByEnvironment("latest", this.project._id);
+    },
     analysis() {
-      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment(
-        "latest",
-        this.project._id
-      );
-      return this.$store.getters.getAnalysisById(aid);
+      return this.$store.getters.getAnalysisById(this.aid);
     },
     metrics() {
       return [
@@ -98,7 +98,7 @@ export default {
       ];
     },
     date() {
-      return new Date(this.analysis.createdAt).toLocaleString("en-CA");
+      return rd(this.analysis.createdAt);
     },
   },
 };

@@ -6,8 +6,8 @@
       </div>
       <div v-else>
         <v-row no-gutters>
-          <v-col cols="3"></v-col>
-          <v-col cols="9">
+          <v-col cols="1"></v-col>
+          <v-col cols="4">
             <v-form>
               <v-text-field
                 prepend-icon="mdi-magnify"
@@ -22,13 +22,9 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="3">
-            <v-card dark outlined>
-              <v-card-title>Filters</v-card-title>
-              <v-card-text> Coming Soon . . . </v-card-text>
-            </v-card>
+          <v-col cols="1">
           </v-col>
-          <v-col cols="9">
+          <v-col cols="10">
             <ProjectCard
               v-for="project in projects"
               :key="project._id"
