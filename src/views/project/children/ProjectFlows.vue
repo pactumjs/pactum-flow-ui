@@ -43,23 +43,21 @@ export default {
     ListHeader,
   },
   computed: {
-    project() {
-      const projectId = this.$route.params.id;
-      return this.$store.getters.getProjectById(projectId);
+    analysis() {
+      return this.$store.getters.getAnalysisByProjectVersion(
+        this.$route.params.id,
+        this.$route.params.version
+      );
     },
     flows() {
-      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment(
-        "latest",
-        this.project._id
-      );
       if (this.filter) {
-        return this.$store.getters.getFlowsByAnalysisId(aid).filter((flow) => {
+        return this.$store.getters.getFlowsByAnalysisId(this.analysis._id).filter((flow) => {
           return (
             flow.name.includes(this.filter) || flow.info.includes(this.filter)
           );
         });
       } else {
-        return this.$store.getters.getFlowsByAnalysisId(aid);
+        return this.$store.getters.getFlowsByAnalysisId(this.analysis._id);
       }
     },
   },

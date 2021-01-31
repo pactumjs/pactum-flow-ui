@@ -43,12 +43,14 @@ export default {
     ListHeader,
   },
   computed: {
-    project() {
-      const projectId = this.$route.params.id;
-      return this.$store.getters.getProjectById(projectId);
+    analysis() {
+      return this.$store.getters.getAnalysisByProjectVersion(
+        this.$route.params.id,
+        this.$route.params.version
+      );
     },
     interactions() {
-      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+      const aid = this.analysis._id;
       const items = this.$store.getters.getInteractionsByAnalysisId(aid);
       items.forEach(item => item.name = item.flow);
       if (this.filter) {

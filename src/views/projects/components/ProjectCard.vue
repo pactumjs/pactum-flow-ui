@@ -11,7 +11,7 @@
         </v-col>
         <v-col cols="12" sm="8" class="pt-4">
           <span class="pointer indigo--text text--darken-4">
-            <router-link :to="'/projects/' + project._id" tag="span">
+            <router-link :to="'/projects/' + project._id + '/' + analysis.version" tag="span">
               {{ project.name }}
             </router-link>
           </span>

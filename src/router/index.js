@@ -21,7 +21,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue')
   },
   {
-    path: '/projects/:id',
+    path: '/projects/:id/:version',
     name: 'Project',
     component: () => import(/* webpackChunkName: "project" */ '../views/project/ProjectPage.vue'),
     children: [

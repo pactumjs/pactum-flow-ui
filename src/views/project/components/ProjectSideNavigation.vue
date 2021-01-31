@@ -9,7 +9,7 @@
       <v-divider></v-divider>
       <v-list dense nav>
         <v-list-item-group mandatory v-model="selected" active-class="border">
-          <v-list-item v-for="item in items" router :to="`/projects/${$route.params.id}/${item.title}`" :key="item.title" class="yellow--text">
+          <v-list-item v-for="item in items" router :to="`/projects/${$route.params.id}/${$route.params.version}/${item.title}`" :key="item.title" class="yellow--text">
             <v-list-item-icon class="mr-4">
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
