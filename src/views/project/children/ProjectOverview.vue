@@ -11,16 +11,29 @@
         <MetricCard :metric="metric" />
       </v-col>
     </v-row>
+    <v-row no-gutters>
+      <v-col style="height: 500px; width: 500px">
+        <tree
+          :data="_tree"
+          node-text="name"
+          layoutType="horizontal"
+          v-bind:radius="4"
+        >
+        </tree>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
+import { tree } from "vued3tree";
 import MetricCard from "../components/MetricCard";
 
 export default {
   name: "ProjectOverview",
   components: {
     MetricCard,
+    tree,
   },
   computed: {
     analysis() {
@@ -63,6 +76,28 @@ export default {
         });
       }
       return metrics;
+    },
+    _tree() {
+      const am = this.$store.getters.getAnalysisMetricsById(this.analysis._id);
+      const providers = am.providers.all.map((provider) => {
+        return { name: provider };
+      });
+      const consumers = am.consumers.all.map((consumer) => {
+        return { name: consumer };
+      });
+      return {
+        name: this.$route.params.id,
+        children: [
+          {
+            name: "Consumers",
+            children: consumers,
+          },
+          {
+            name: "Providers",
+            children: providers,
+          },
+        ],
+      };
     },
   },
 };
