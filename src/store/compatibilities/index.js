@@ -2,23 +2,21 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
-    compatibilities: [],
-    projects: []
+    compatibilities: []
   }
 }
 
 const getters = {
-  getCompatibilityByProject: (state) => (project) => {
+  getCompatibilityByProjectVersion: (state) => (project, version) => {
     return state.compatibilities.filter(cty => {
-      return cty.consumer === project || cty.provider === project;
+      return (cty.consumer === project && cty.consumerVersion === version) || (cty.provider === project && cty.providerVersion === version);
     });
   }
 }
 
 const mutations = {
-  [Mutations.ADD_COMPATIBILITIES](state, data) {
-    state.projects = state.projects.concat(data.project);
-    const filtered = data.compatibilities.filter(cc => {
+  [Mutations.ADD_COMPATIBILITIES](state, compatibilities) {
+    const filtered = compatibilities.filter(cc => {
       return !state.compatibilities.find(sc => sc._id === cc._id);
     });
     state.compatibilities = state.compatibilities.concat(filtered);
@@ -26,11 +24,9 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT]({ state, commit }, project ) {
-    if (!state.projects.includes(project)) {
-      const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}`);
-      commit(Mutations.ADD_COMPATIBILITIES, { project, compatibilities: await response.json() });
-    }
+  async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION]({ commit }, { project, version }) {
+    const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}&version=${version}`);
+    commit(Mutations.ADD_COMPATIBILITIES, await response.json());
   }
 }
 
