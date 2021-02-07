@@ -32,10 +32,10 @@
         <v-divider class="my-2"></v-divider>
         <p class="text-h5 text-center font-weight-bold">{{ flow.projectId }}</p>
         <v-timeline>
-          <v-timeline-item left icon="mdi-arrow-right">
+          <v-timeline-item left icon="mdi-arrow-right" color="green">
             <RequestCard :request="request" />
           </v-timeline-item>
-          <v-timeline-item left icon="mdi-arrow-left">
+          <v-timeline-item left icon="mdi-arrow-left" color="green">
             <ResponseCard :response="response" />
           </v-timeline-item>
         </v-timeline>

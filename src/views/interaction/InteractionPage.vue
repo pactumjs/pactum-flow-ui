@@ -48,23 +48,36 @@
         </v-row>
         <v-divider class="my-2"></v-divider>
         <p class="text-h5 text-center font-weight-bold pointer">
-          <router-link tag="span" :to="`/projects/${interaction.provider}`">{{ interaction.provider }}</router-link>
+          <router-link tag="span" :to="`/projects/${interaction.provider}`">
+            {{ interaction.provider }}
+          </router-link>
         </p>
-        <v-timeline>
-          <v-timeline-item left icon="mdi-arrow-right">
-            <RequestCard :request="request" />
-          </v-timeline-item>
-          <v-timeline-item
-            right
-            icon="mdi-arrow-decision-outline"
-            color="green"
-          >
-            <FlowCard :flow="flow" />
-          </v-timeline-item>
-          <v-timeline-item left icon="mdi-arrow-left">
-            <ResponseCard :response="response" />
-          </v-timeline-item>
-        </v-timeline>
+        <v-row>
+          <v-col>
+            <v-timeline dense reverse>
+              <v-timeline-item icon="mdi-swap-horizontal" fill-dot>
+              </v-timeline-item>
+              <v-timeline-item icon="mdi-arrow-right">
+                <RequestCard :request="request" />
+              </v-timeline-item>
+              <v-timeline-item icon="mdi-arrow-left">
+                <ResponseCard :response="response" />
+              </v-timeline-item>
+            </v-timeline>
+          </v-col>
+          <v-col>
+            <v-timeline dense v-if="flow && flowRequest && flowResponse">
+              <v-timeline-item icon="mdi-arrow-decision-outline" color="green" fill-dot>
+              </v-timeline-item>
+              <v-timeline-item icon="mdi-arrow-left" color="green">
+                <RequestCard :request="flowRequest" />
+              </v-timeline-item>
+              <v-timeline-item icon="mdi-arrow-right" color="green">
+                <ResponseCard :response="flowResponse" />
+              </v-timeline-item>
+            </v-timeline>
+          </v-col>
+        </v-row>
       </v-container>
     </div>
   </main>
@@ -83,7 +96,6 @@
 import LoadingSpinner from "../../components/LoadingSpinner";
 import RequestCard from "../../components/RequestCard";
 import ResponseCard from "../../components/ResponseCard";
-import FlowCard from "../../components/FlowCard";
 
 export default {
   name: "InteractionPage",
@@ -95,8 +107,7 @@ export default {
   components: {
     LoadingSpinner,
     RequestCard,
-    ResponseCard,
-    FlowCard,
+    ResponseCard
   },
   computed: {
     isInteractionLoading() {
@@ -125,6 +136,12 @@ export default {
         this.providerAnalysisId,
         this.interaction.flow
       );
+    },
+    flowRequest() {
+      return this.$store.getters.getRequestById(this.flow._id);
+    },
+    flowResponse() {
+      return this.$store.getters.getResponseById(this.flow._id);
     },
   },
   methods: {
