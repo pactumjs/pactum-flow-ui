@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container>
-      <h5 class="text-h5">Compatability Matrix</h5>
+      <h5 class="text-h5">Compatibility Matrix</h5>
       <v-divider class="my-1"></v-divider>
       <v-row>
         <v-col>
@@ -46,7 +46,7 @@
 
               <v-card>
                 <v-card-title class="headline grey lighten-4">
-                  Compatability Failures
+                  Compatibility Failures
                 </v-card-title>
 
                 <v-card-text>

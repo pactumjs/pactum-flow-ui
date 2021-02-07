@@ -47,8 +47,8 @@
           </v-col>
         </v-row>
         <v-divider class="my-2"></v-divider>
-        <p class="text-h5 text-center font-weight-bold">
-          {{ interaction.provider }}
+        <p class="text-h5 text-center font-weight-bold pointer">
+          <router-link tag="span" :to="`/projects/${interaction.provider}`">{{ interaction.provider }}</router-link>
         </p>
         <v-timeline>
           <v-timeline-item left icon="mdi-arrow-right">
@@ -69,6 +69,15 @@
     </div>
   </main>
 </template>
+
+<style scoped>
+.pointer {
+  cursor: pointer;
+}
+.pointer span:hover {
+  text-decoration-line: underline;
+}
+</style>
 
 <script>
 import LoadingSpinner from "../../components/LoadingSpinner";

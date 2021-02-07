@@ -11,7 +11,10 @@
         </v-col>
         <v-col cols="12" sm="8" class="pt-4">
           <span class="pointer indigo--text text--darken-4">
-            <router-link :to="'/projects/' + project._id + '/' + analysis.version" tag="span">
+            <router-link
+              :to="'/projects/' + project._id + '/' + analysis.version"
+              tag="span"
+            >
               {{ project.name }}
             </router-link>
           </span>
@@ -39,11 +42,24 @@
             <v-card-subtitle>
               <span> Version </span>
               <br />
-              <span class="text-caption black--text font-weight-bold">{{ analysis.version }}</span>
+              <span class="text-caption black--text font-weight-bold">{{
+                analysis.version
+              }}</span>
               <br />
               <span class="pt-2"> Last Analysis </span>
               <br />
-              <span class="text-caption black--text font-weight-bold">{{ date }}</span>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <span
+                    v-bind="attrs"
+                    v-on="on"
+                    class="text-caption black--text font-weight-bold"
+                  >
+                    {{ date }}
+                  </span>
+                </template>
+                <span>{{ new Date(analysis.createdAt) }}</span>
+              </v-tooltip>
             </v-card-subtitle>
           </v-card>
         </v-col>
@@ -62,13 +78,16 @@
 </style>
 
 <script>
-import rd from 'tiny-relative-date';
+import rd from "tiny-relative-date";
 export default {
   name: "ProjectCard",
   props: ["project"],
   computed: {
     aid() {
-      return this.$store.getters.getProjectAnalysisIdByEnvironment("latest", this.project._id);
+      return this.$store.getters.getProjectAnalysisIdByEnvironment(
+        "latest",
+        this.project._id
+      );
     },
     analysis() {
       return this.$store.getters.getAnalysisById(this.aid);

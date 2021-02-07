@@ -22,7 +22,12 @@ const getters = {
 
 const mutations = {
   [Mutations.ADD_INTERACTIONS](state, interactions) {
-    state.interactions = state.interactions.concat(interactions);
+    const filtered = interactions.filter(interaction => {
+      return !state.interactions.find(_interaction => {
+        return _interaction._id === interaction._id;
+      })
+    });
+    state.interactions = state.interactions.concat(filtered);
   },
   [Mutations.ADD_INTERACTION](state, interaction) {
     state.interactions.push(interaction);

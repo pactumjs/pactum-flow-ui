@@ -27,7 +27,12 @@ const getters = {
 
 const mutations = {
   [Mutations.ADD_FLOWS](state, flows) {
-    state.flows = state.flows.concat(flows);
+    const filtered = flows.filter(flow => {
+      return !state.flows.find(_flow => {
+        return _flow._id === flow._id;
+      })
+    });
+    state.flows = state.flows.concat(filtered);
   },
   [Mutations.ADD_FLOW](state, flow) {
     state.flows.push(flow);
