@@ -61,25 +61,33 @@ const actions = {
           ids: requiredIds
         })
       });
-      commit(Mutations.ADD_ANALYSES, await response.json());
+      if (response.ok) {
+        commit(Mutations.ADD_ANALYSES, await response.json());
+      }
     }
   },
   async [Actions.FETCH_ANALYSIS_BY_ID]({ getters, commit }, id) {
     if (!getters.getAnalysisById(id)) {
       const response = await fetch(`/api/flow/v1/analyses/${id}`);
-      commit(Mutations.ADD_ANALYSIS, await response.json());
+      if (response.ok) {
+        commit(Mutations.ADD_ANALYSIS, await response.json());
+      }
     }
   },
   async [Actions.FETCH_ANALYSIS_METRICS_BY_ID]({ getters, commit }, id) {
     if (!getters.getAnalysisMetricsById(id)) {
       const response = await fetch(`/api/flow/v1/metrics/analyses/${id}`);
-      commit(Mutations.ADD_ANALYSIS_METRICS, await response.json());
+      if (response.ok) {
+        commit(Mutations.ADD_ANALYSIS_METRICS, await response.json());
+      }
     }
   },
   async [Actions.FETCH_ANALYSES_BY_PROJECT]({ state, commit }, project) {
     if (!state.loadedAnalysesProjects.includes(project)) {
       const response = await fetch(`/api/flow/v1/analyses?projectId=${project}`);
-      commit(Mutations.ADD_ANALYSES_BY_PROJECT, {project, analyses: await response.json()});
+      if (response.ok) {
+        commit(Mutations.ADD_ANALYSES_BY_PROJECT, {project, analyses: await response.json()});
+      }
     }
   }
 }

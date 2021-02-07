@@ -26,7 +26,9 @@ const mutations = {
 const actions = {
   async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION]({ commit }, { project, version }) {
     const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}&version=${version}`);
-    commit(Mutations.ADD_COMPATIBILITIES, await response.json());
+    if (response.ok) {
+      commit(Mutations.ADD_COMPATIBILITIES, await response.json());
+    }
   }
 }
 

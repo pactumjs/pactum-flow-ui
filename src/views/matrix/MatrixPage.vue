@@ -31,14 +31,16 @@
         v-if="project && version"
       >
         <template v-slot:[`item.status`]="{ item }">
-          <span v-if="item.status === 'PASSED'" class="overline green--text">
-            {{ item.status }}
-          </span>
+          <div v-if="item.status === 'PASSED'">
+            <v-btn disabled text icon>
+              <v-icon dark> mdi-check-bold </v-icon>
+            </v-btn>
+          </div>
           <div v-else>
             <v-dialog v-model="dialog" width="1000">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn class="overline red--text" text v-bind="attrs" v-on="on">
-                  {{ item.status }}
+                <v-btn class="red--text" text icon v-bind="attrs" v-on="on">
+                  <v-icon dark> mdi-close-thick </v-icon>
                 </v-btn>
               </template>
 

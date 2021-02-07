@@ -34,7 +34,9 @@ const actions = {
           'Content-Type': 'application/json'
         }
       });
-      commit(Mutations.ASSIGN_ENVIRONMENTS, await response.json());
+      if (response.ok) {
+        commit(Mutations.ASSIGN_ENVIRONMENTS, await response.json());
+      }
     }
   }
 }

@@ -21,12 +21,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue')
   },
   {
+    path: '/projects/:id',
+    component: () => import(/* webpackChunkName: "projects" */ '../views/project/LeanProjectPage.vue')
+  },
+  {
     path: '/projects/:id/:version',
-    name: 'Project',
     component: () => import(/* webpackChunkName: "project" */ '../views/project/ProjectPage.vue'),
     children: [
       {
         path: '',
+        name: 'Project',
         redirect: 'overview'
       },
       {

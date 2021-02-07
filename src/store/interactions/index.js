@@ -41,8 +41,10 @@ const actions = {
           'Content-Type': 'application/json'
         }
       });
-      commit(Mutations.ADD_INTERACTIONS, await response.json());
-      commit(Mutations.ADD_ANALYSIS_TO_LOADED_INTERACTIONS, id);
+      if (response.ok) {
+        commit(Mutations.ADD_INTERACTIONS, await response.json());
+        commit(Mutations.ADD_ANALYSIS_TO_LOADED_INTERACTIONS, id);
+      }
     }
   },
   async [Actions.FETCH_INTERACTION_BY_ID]({ getters, commit }, id) {
@@ -53,7 +55,9 @@ const actions = {
           'Content-Type': 'application/json'
         }
       });
-      commit(Mutations.ADD_INTERACTION, await response.json());
+      if (response.ok) {
+        commit(Mutations.ADD_INTERACTION, await response.json());
+      }
     }
   }
 }

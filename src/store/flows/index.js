@@ -41,8 +41,10 @@ const actions = {
           'Content-Type': 'application/json'
         }
       });
-      commit(Mutations.ADD_FLOWS, await response.json());
-      commit(Mutations.ADD_ANALYSIS_TO_LOADED_FLOWS, id);
+      if (response.ok) {
+        commit(Mutations.ADD_FLOWS, await response.json());
+        commit(Mutations.ADD_ANALYSIS_TO_LOADED_FLOWS, id);
+      }
     }
   },
   async [Actions.FETCH_FLOW_BY_ID]({ getters, commit }, id) {
@@ -53,7 +55,9 @@ const actions = {
           'Content-Type': 'application/json'
         }
       });
-      commit(Mutations.ADD_FLOW, await response.json());
+      if (response.ok) {
+        commit(Mutations.ADD_FLOW, await response.json());
+      }
     }
   }
 }
