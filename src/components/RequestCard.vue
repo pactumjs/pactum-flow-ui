@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card outlined tile>
       <v-card-title> Request </v-card-title>
       <v-card-subtitle class="font-weight-bold">
         <span :class="`${request.method} text-overline font-weight-bold`">
@@ -25,10 +25,7 @@ export default {
   props: ["request"],
   components: {
     CodeExpansionPanel,
-  },
-  data: () => ({
-    show: false,
-  }),
+  }
 };
 </script>
 

@@ -15,8 +15,7 @@
         <v-card-text>
           <pre class="language-json">
             <code>
-{{ JSON.stringify(code, null, 2) }}
-            </code>
+{{ JSON.stringify(code, null, 2) }}</code>
         </pre>
         </v-card-text>
       </div>

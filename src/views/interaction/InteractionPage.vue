@@ -16,20 +16,18 @@
               <v-icon small> mdi-download-outline </v-icon>
               Consumer
             </span>
-             <br />
+            <br />
             <span class="text-subtitle-2">{{ interaction.projectId }}</span>
           </v-col>
-          <v-divider vertical></v-divider>
           <v-col cols="2">
             <span class="text-caption">
               <v-icon small> mdi-upload-outline </v-icon>
               Provider
             </span>
-             <br />
+            <br />
             <span class="text-subtitle-2">{{ interaction.provider }}</span>
           </v-col>
-          <v-divider vertical></v-divider>
-          <v-col cols="7">
+          <v-col cols="6">
             <span class="text-caption">
               <v-icon small> mdi-arrow-decision-outline </v-icon>
               Provider's Flow
@@ -37,12 +35,31 @@
             <br />
             <span class="text-subtitle-2">{{ interaction.flow }}</span>
           </v-col>
+          <v-col cols="2">
+            <v-select
+              :items="versions"
+              outlined
+              dense
+              label="Provider Version"
+              hide-details="false"
+              @change="loadVersion"
+            ></v-select>
+          </v-col>
         </v-row>
         <v-divider class="my-2"></v-divider>
-        <p class="text-h5 text-center font-weight-bold">{{ interaction.provider }}</p>
+        <p class="text-h5 text-center font-weight-bold">
+          {{ interaction.provider }}
+        </p>
         <v-timeline>
           <v-timeline-item left icon="mdi-arrow-right">
             <RequestCard :request="request" />
+          </v-timeline-item>
+          <v-timeline-item
+            right
+            icon="mdi-arrow-decision-outline"
+            color="green"
+          >
+            <FlowCard :flow="flow" />
           </v-timeline-item>
           <v-timeline-item left icon="mdi-arrow-left">
             <ResponseCard :response="response" />
@@ -57,13 +74,20 @@
 import LoadingSpinner from "../../components/LoadingSpinner";
 import RequestCard from "../../components/RequestCard";
 import ResponseCard from "../../components/ResponseCard";
+import FlowCard from "../../components/FlowCard";
 
 export default {
   name: "InteractionPage",
+  data: () => {
+    return {
+      providerAnalysisId: "",
+    };
+  },
   components: {
     LoadingSpinner,
     RequestCard,
     ResponseCard,
+    FlowCard,
   },
   computed: {
     isInteractionLoading() {
@@ -80,6 +104,35 @@ export default {
     },
     response() {
       return this.$store.getters.getResponseById(this.id);
+    },
+    versions() {
+      const provider = this.interaction.provider;
+      const analyses = this.$store.getters.getAnalysisByProject(provider);
+      return analyses.map((analysis) => analysis.version);
+    },
+    flow() {
+      return this.$store.getters.getFlowByName(
+        this.interaction.provider,
+        this.providerAnalysisId,
+        this.interaction.flow
+      );
+    },
+  },
+  methods: {
+    async loadVersion(version) {
+      const providerAnalysis = this.$store.getters.getAnalysisByProjectVersion(
+        this.interaction.provider,
+        version
+      );
+      await this.$store.dispatch(
+        "FETCH_FLOWS_BY_ANALYSIS_ID",
+        providerAnalysis._id
+      );
+      this.providerAnalysisId = providerAnalysis._id;
+      if (this.flow) {
+        this.$store.dispatch("FETCH_REQUEST_BY_ID", this.flow._id);
+        this.$store.dispatch("FETCH_RESPONSE_BY_ID", this.flow._id);
+      }
     },
   },
   created() {

@@ -18,6 +18,11 @@ const getters = {
   getFlowsByAnalysisId: (state) => (id) => {
     return state.flows.filter(_flow => _flow.analysisId === id);
   },
+  getFlowByName: (state) => (projectId, analysisId, name) => {
+    return state.flows.find(_flow => { 
+      return _flow.projectId === projectId && _flow.analysisId === analysisId && _flow.name === name;
+    });
+  }
 }
 
 const mutations = {

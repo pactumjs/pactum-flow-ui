@@ -13,7 +13,7 @@ const mutations = {
 }
 
 const actions = {
-  async [Actions.LOAD_INTERACTION_PAGE_VIEW]({ dispatch, commit }, id) {
+  async [Actions.LOAD_INTERACTION_PAGE_VIEW]({ dispatch, commit, rootGetters }, id) {
     try {
       commit(Mutations.LOADING_INTERACTION, true);
       await Promise.all([
@@ -21,6 +21,12 @@ const actions = {
         dispatch(Actions.FETCH_REQUEST_BY_ID, id),
         dispatch(Actions.FETCH_RESPONSE_BY_ID, id)
       ]);
+      const interaction = rootGetters.getInteractionById(id);
+      if (interaction) {
+        await dispatch(Actions.FETCH_ENVIRONMENTS);
+        await dispatch(Actions.FETCH_PROJECT_BY_ID, interaction.provider);
+        await dispatch(Actions.FETCH_ANALYSES_BY_PROJECT, interaction.provider);
+      }
     } catch (error) {
       console.log(error);
     } finally {

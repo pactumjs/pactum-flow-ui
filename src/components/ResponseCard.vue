@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card outlined tile>
       <v-card-title> Response </v-card-title>
       <v-card-subtitle>
         Status Code:
@@ -21,9 +21,6 @@ export default {
   props: ["response"],
   components: {
     CodeExpansionPanel,
-  },
-  data: () => ({
-    show: false,
-  }),
+  }
 };
 </script>
