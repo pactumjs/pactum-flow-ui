@@ -3,9 +3,18 @@
     <div v-if="isProjectLoading">
       <LoadingSpinner />
     </div>
-    <div v-else-if="project && analysis">
+    <div v-else-if="!project">
+      <ResourceNotFound :message="'Project Not Found'" />
+    </div>
+    <div v-else-if="!analysis">
+      <ResourceNotFound :message="'Version Not Found'" />
+    </div>
+    <div v-else-if="!analysis.processed">
+      <ResourceNotFound :message="'Version Not Processed'" />
+    </div>
+    <div v-else>
       <v-container>
-        <ProjectHeader :name="project.name" />
+        <ProjectHeader :name="project.name" :analyses="analyses" />
       </v-container>
       <v-container>
         <v-row no-gutters>
@@ -18,18 +27,12 @@
         </v-row>
       </v-container>
     </div>
-    <div v-else>
-      <v-container class="text-center my-10">
-        <v-icon x-large>mdi-magnify-remove-outline</v-icon>
-        <br>
-        <span class="text-h4 my-4">Project Not Found</span>
-      </v-container>
-    </div>
   </div>
 </template>
 
 <script>
 import LoadingSpinner from "../../components/LoadingSpinner";
+import ResourceNotFound from "../../components/ResourceNotFound";
 import ProjectHeader from "./components/ProjectHeader";
 import ProjectSideNavigation from "./components/ProjectSideNavigation";
 
@@ -37,6 +40,7 @@ export default {
   name: "Project",
   components: {
     LoadingSpinner,
+    ResourceNotFound,
     ProjectHeader,
     ProjectSideNavigation,
   },
@@ -49,15 +53,33 @@ export default {
     },
     analysis() {
       if (this.project) {
-        const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
-        return this.$store.getters.getAnalysisById(aid);
+        return this.$store.getters.getAnalysisByProjectVersion(
+          this.$route.params.id,
+          this.$route.params.version
+        );
       } else {
         return null;
       }
     },
+    analyses() {
+      return this.$store.getters.getAnalysisByProject(this.$route.params.id);
+    },
   },
   created() {
-    this.$store.dispatch("LOAD_PROJECT_PAGE_VIEW", this.$route.params.id);
+    const options = {
+      pid: this.$route.params.id,
+      version: this.$route.params.version,
+    };
+    this.$store.dispatch("LOAD_PROJECT_PAGE_VIEW", options);
+  },
+  watch: {
+    $route() {
+      const options = {
+        pid: this.$route.params.id,
+        version: this.$route.params.version,
+      };
+      this.$store.dispatch("LOAD_PROJECT_PAGE_VIEW", options);
+    },
   },
 };
 </script>

@@ -19,13 +19,18 @@ const routes = [
     meta: { requiresAuth: false }
   },
   {
+    path: '/matrix',
+    name: 'Matrix',
+    component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue')
+  },
+  {
     path: '/projects',
     name: 'Projects',
     component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/projects/:id',
+    path: '/projects/:id/:version',
     name: 'Project',
     component: () => import(/* webpackChunkName: "project" */ '../views/project/ProjectPage.vue'),
     meta: { requiresAuth: true },

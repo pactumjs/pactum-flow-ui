@@ -53,6 +53,9 @@
           </v-list-item>
         </v-list>
       </v-menu>
+    <v-toolbar-items >
+      <v-btn class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
+      <v-btn class="yellow--text overline" :to="'/projects'" text> Projects </v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>

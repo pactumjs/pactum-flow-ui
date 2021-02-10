@@ -33,12 +33,14 @@ export default {
     ListHeader,
   },
   computed: {
-    project() {
-      const projectId = this.$route.params.id;
-      return this.$store.getters.getProjectById(projectId);
+    analysis() {
+      return this.$store.getters.getAnalysisByProjectVersion(
+        this.$route.params.id,
+        this.$route.params.version
+      );
     },
     providers() {
-      const aid = this.$store.getters.getProjectAnalysisIdByEnvironment('latest', this.project._id);
+      const aid = this.analysis._id;
       const am = this.$store.getters.getAnalysisMetricsById(aid);
       return am.providers.all;
     },

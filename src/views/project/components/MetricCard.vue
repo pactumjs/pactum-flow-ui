@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card outlined router :to="`/projects/${$route.params.id}/${loweCaseName}`">
+    <v-card outlined router :to="`/projects/${$route.params.id}/${$route.params.version}/${loweCaseName}`">
       <v-card-title>
         <v-icon left>{{ metric.icon }}</v-icon>
         {{ metric.name }}

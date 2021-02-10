@@ -5,14 +5,26 @@
         <LoadingSpinner />
       </div>
       <div v-else>
-        <v-row>
-          <v-col cols="3">
-            <v-card dark outlined>
-              <v-card-title>Filters</v-card-title>
-              <v-card-text> Coming Soon . . . </v-card-text>
-            </v-card>
+        <v-row no-gutters>
+          <v-col cols="1"></v-col>
+          <v-col cols="4">
+            <v-form>
+              <v-text-field
+                prepend-icon="mdi-magnify"
+                v-model="filter"
+                dense
+                clearable
+                color="black"
+                placeholder="Search"
+                hide-details="true"
+              ></v-text-field>
+            </v-form>
           </v-col>
-          <v-col cols="9">
+        </v-row>
+        <v-row>
+          <v-col cols="1">
+          </v-col>
+          <v-col cols="10">
             <ProjectCard
               v-for="project in projects"
               :key="project._id"
@@ -32,13 +44,27 @@ import ProjectCard from "./components/ProjectCard";
 
 export default {
   name: "ProjectsPage",
+  data: () => {
+    return {
+      filter: "",
+    };
+  },
   components: {
     LoadingSpinner,
     ProjectCard,
   },
   computed: {
     projects() {
-      return this.$store.state.Projects.projects;
+      if (this.filter) {
+        return this.$store.state.Projects.projects.filter((project) => {
+          return (
+            project._id.includes(this.filter) ||
+            project.name.includes(this.filter)
+          );
+        });
+      } else {
+        return this.$store.state.Projects.projects;
+      }
     },
     isProjectsLoading() {
       return this.$store.state.ProjectsPageView.loadingProjects;

@@ -3,7 +3,8 @@ import { Actions, Mutations } from '../types';
 const state = () => {
   return {
     analyses: [],
-    analysesMetrics: []
+    analysesMetrics: [],
+    loadedAnalysesProjects: []
   }
 }
 
@@ -13,6 +14,13 @@ const getters = {
   },
   getAnalysisMetricsById: (state) => (id) => {
     return state.analysesMetrics.find(am => am._id === id);
+  },
+  getAnalysisByProject: (state) => (project) => {
+    return state.analyses.filter(analysis => analysis.projectId === project);
+  },
+  getAnalysisByProjectVersion: (state) => (project, version) => {
+    const analyses = state.analyses.filter(analysis => analysis.projectId === project);
+    return analyses.find(analysis => analysis.version === version);
   }
 }
 
@@ -25,6 +33,13 @@ const mutations = {
   },
   [Mutations.ADD_ANALYSIS_METRICS](state, metrics) {
     state.analysesMetrics.push(metrics);
+  },
+  [Mutations.ADD_ANALYSES_BY_PROJECT](state, data) {
+    state.loadedAnalysesProjects.push(data.project);
+    const filtered = data.analyses.filter(analysis => {
+      return !state.analyses.find(_analysis => _analysis._id === analysis._id);
+    });
+    state.analyses = state.analyses.concat(filtered);
   }
 };
 
@@ -59,6 +74,12 @@ const actions = {
     if (!getters.getAnalysisMetricsById(id)) {
       const response = await fetch(`/api/flow/v1/metrics/analyses/${id}`);
       commit(Mutations.ADD_ANALYSIS_METRICS, await response.json());
+    }
+  },
+  async [Actions.FETCH_ANALYSES_BY_PROJECT]({ state, commit }, project) {
+    if (!state.loadedAnalysesProjects.includes(project)) {
+      const response = await fetch(`/api/flow/v1/analyses?projectId=${project}`);
+      commit(Mutations.ADD_ANALYSES_BY_PROJECT, {project, analyses: await response.json()});
     }
   }
 }
