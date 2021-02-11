@@ -15,7 +15,13 @@
           <span class="text-caption"> ( {{ analysis.version }} )</span>
         </span>
         <v-divider class="my-2"></v-divider>
-        <p class="text-h5 text-center font-weight-bold">{{ flow.projectId }}</p>
+        <p
+          class="text-h5 text-center font-weight-bold"
+          v-on:click="navToFlows(flow.projectId)"
+        >
+          <v-icon> mdi-domain </v-icon>
+          {{ flow.projectId }}
+        </p>
         <v-timeline>
           <v-timeline-item left icon="mdi-arrow-right" color="green">
             <RequestCard :request="request" />
@@ -63,6 +69,11 @@ export default {
   },
   created() {
     this.$store.dispatch("LOAD_FLOW_PAGE_VIEW", this.$route.params.id);
+  },
+  methods: {
+    navToFlows: function (route) {
+      this.$router.push(`/projects/${route}/flows`);
+    },
   },
 };
 </script>

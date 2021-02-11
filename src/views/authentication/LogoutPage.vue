@@ -40,9 +40,6 @@ export default {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
     },
-  },
-  created() {
-    this.$store.dispatch("LOGOUT");
-  },
+  }
 };
 </script>

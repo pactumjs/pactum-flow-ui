@@ -20,6 +20,7 @@ const routes = [
   },
   {
     path: '/matrix',
+    name: 'Matrix',
     component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue'),
     children: [
       {
@@ -36,7 +37,8 @@ const routes = [
         name: 'Network',
         component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/NetworkPage.vue')
       }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/projects',
