@@ -21,7 +21,8 @@ const routes = [
   {
     path: '/matrix',
     name: 'Matrix',
-    component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue')
+    component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/projects',

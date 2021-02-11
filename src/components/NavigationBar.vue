@@ -8,26 +8,9 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn
-        v-if="!isAuthenticated"
-        class="yellow--text overline"
-        :to="'/login'"
-        text
-      >
-        Log In
-      </v-btn>
-    </v-toolbar-items>
-        <v-toolbar-items>
-      <v-btn
-        v-if="isAuthenticated"
-        class="yellow--text overline"
-        :to="'/projects'"
-        text
-      >
-        Projects
-      </v-btn>
-    </v-toolbar-items>
-    <v-toolbar-items>
+      <v-btn v-if="!isAuthenticated" class="yellow--text overline" :to="'/login'" text> Log In </v-btn>
+      <v-btn v-if="isAuthenticated" class="yellow--text overline" :to="'/projects'" text> Projects </v-btn>
+      <v-btn v-if="isAuthenticated" class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
       <v-menu v-if="isAuthenticated" bottom left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn light color="yellow" icon v-bind="attrs" v-on="on">
@@ -40,22 +23,17 @@
               <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="menuItems"
-                >Pactum User</v-list-item-title
-              >
+              <v-list-item-title class="menuItems"> {{ user }} </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
             <v-list-item-title class="menuItems">Profile</v-list-item-title>
           </v-list-item>
-          <v-list-item :to="'/logout'">
+          <v-list-item @click="logout">
             <v-list-item-title class="menuItems">Logout</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-    <v-toolbar-items >
-      <v-btn class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
-      <v-btn class="yellow--text overline" :to="'/projects'" text> Projects </v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>
@@ -81,6 +59,22 @@ export default {
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
     },
+    user() {
+      return this.$store.getters.loggedInUser;
+    }
   },
+  methods: {
+     logout: function () {
+        this.$store
+          .dispatch("LOGOUT")
+          .then(() => {
+            this.$router.push("/logout");
+          })
+          .catch((err) => {
+            // TODO: Route to error page and delete sessions
+            console.log(err.message);
+          });
+      }
+  }
 };
 </script>

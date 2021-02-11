@@ -1,5 +1,5 @@
 {
-  "name": "pactum-flow-ui",
+  "name": "PactumJS",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "tiny-relative-date": "^1.3.0",
     "vue": "^2.6.11",
     "vue-prism": "^1.0.5",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0",
-    "vuex-persistedstate": "^3.1.0"
+    "vuex-persistedstate": "^3.1.0",
+    "vue-toasted": "^1.1.28"
   },
   "devDependencies": {
     "@mdi/font": "^5.8.55",

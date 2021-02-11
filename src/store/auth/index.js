@@ -9,12 +9,11 @@ const state = () => {
 
 const getters = {
   isAuthenticated: state => !!state.user,
-  StateUser: state => state.user,
+  loggedInUser: state => state.user,
 }
 
 const mutations = {
   [Mutations.SAVE_SESSION](state, userSession) {
-    console.log("Mutation called")
     state.user = userSession['username'];
     state.accessToken = userSession['sessionToken'];
   },
@@ -26,36 +25,34 @@ const mutations = {
 
 const actions = {
   async [Actions.LOGIN]({ commit }, userCreds) {
-      const buff = new Buffer(`${userCreds.username}:${userCreds.password}`);
-      const base64data = buff.toString('base64');
-      
-      const response = await fetch('/api/flow/captain/v1/session', {
-        method: 'POST',
-        headers: {
-          'authorization': 'Basic ' + base64data
-        },
-      });
-      const userSession = await response.json();
-      // if (userSession.SessionToken) {
-      //   // store user details and jwt token in local storage to keep user logged in between page refreshes
-      //   localStorage.setItem('userSession', JSON.stringify(userSession.SessionToken));
-      // }
-
-      if (!response.ok) {
-        if (response.status === 401) {
-            // auto logout if 401 response returned from api
-            await [Actions.LOGOUT]();
-            location.reload(true);
-        }
-      }
-      commit(Mutations.SAVE_SESSION, userSession);
+    const buff = new Buffer(`${userCreds.username}:${userCreds.password}`);
+    const base64data = buff.toString('base64');
+    const response = await fetch('/api/flow/captain/v1/session', {
+      method: 'POST',
+      headers: {
+        'authorization': 'Basic ' + base64data
+      },
+    });
+    const userSession = await response.json();
+    if (!response.ok) {
+      return Promise.reject(new Error(response.status));
+    }
+    commit(Mutations.SAVE_SESSION, userSession);
+    return Promise.resolve(response.status);
   },
 
-  async [Actions.LOGOUT]({ commit }) {
-    // remove user from local storage to log user out
-    // localStorage.removeItem('userSession');
+  async [Actions.LOGOUT]({ state, commit }) {
+    const response = await fetch('/api/flow/captain/v1/session?username=' + state.user, {
+      method: 'DELETE',
+      headers: {
+        'X-Access-Token': state.accessToken
+      }
+    });
+    if (!response.ok) {
+      return Promise.reject(new Error(response.status));
+    }
     commit(Mutations.INVALIDATE_SESSION);
-    this.$router.push("/login");
+    return Promise.resolve(response.status);
   }
 }
 
