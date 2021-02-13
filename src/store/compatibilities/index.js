@@ -11,6 +11,11 @@ const getters = {
     return state.compatibilities.filter(cty => {
       return (cty.consumer === project && cty.consumerVersion === version) || (cty.provider === project && cty.providerVersion === version);
     });
+  },
+  getCompatibilityByConsumerProviderVersions: (state) => (consumer, consumerVersion, provider, providerVersion) => {
+    return state.compatibilities.find(cty => {
+      return cty.consumer === consumer && cty.consumerVersion === consumerVersion && cty.provider === provider && cty.providerVersion === providerVersion;
+    });
   }
 }
 

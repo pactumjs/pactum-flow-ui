@@ -5,35 +5,34 @@
     </div>
     <div v-else>
       <v-container v-if="interaction && request && response">
-        <span class="text-h6">
-          <v-icon> mdi-swap-horizontal </v-icon>
-          Interaction
-        </span>
-        <v-divider class="my-2"></v-divider>
         <v-row>
-          <v-col cols="2">
-            <span class="text-caption">
-              <v-icon small> mdi-download-outline </v-icon>
-              Consumer
+          <v-col>
+            <span>
+              <v-icon left> mdi-swap-horizontal </v-icon>
+              <span class="text-subtitle-1">{{ interaction.flow }}</span>
             </span>
             <br />
-            <span class="text-subtitle-2">{{ interaction.projectId }}</span>
-          </v-col>
-          <v-col cols="2">
-            <span class="text-caption">
-              <v-icon small> mdi-upload-outline </v-icon>
-              Provider
+            <span class="ml-8">
+              <span class="text-caption font-weight-bold">{{
+                interaction.projectId
+              }}</span>
+              <span class="text-caption"> ( {{ analysis.version }} ) </span>
+              <v-icon left> mdi-arrow-left-right </v-icon>
+              <span class="text-caption font-weight-bold">{{
+                interaction.provider
+              }}</span>
+              <span v-if="providerVersion">
+                <span class="text-caption"> ( {{ providerVersion }} ) </span>
+                <span v-if="error">
+                  <v-icon right color="red"> mdi-close-thick </v-icon>
+                  <br />
+                  <span class="ml-8 red--text text-caption">{{ error }}</span>
+                </span>
+                <span v-else>
+                  <v-icon right color="green"> mdi-check-bold </v-icon>
+                </span>
+              </span>
             </span>
-            <br />
-            <span class="text-subtitle-2">{{ interaction.provider }}</span>
-          </v-col>
-          <v-col cols="6">
-            <span class="text-caption">
-              <v-icon small> mdi-arrow-decision-outline </v-icon>
-              Provider's Flow
-            </span>
-            <br />
-            <span class="text-subtitle-2">{{ interaction.flow }}</span>
           </v-col>
           <v-col cols="2">
             <v-select
@@ -54,7 +53,7 @@
         </p>
         <v-row>
           <v-col>
-            <v-timeline dense reverse>
+            <v-timeline dense reverse class="mr-n8">
               <v-timeline-item icon="mdi-swap-horizontal" fill-dot>
               </v-timeline-item>
               <v-timeline-item icon="mdi-arrow-right">
@@ -66,8 +65,16 @@
             </v-timeline>
           </v-col>
           <v-col>
-            <v-timeline dense v-if="flow && flowRequest && flowResponse">
-              <v-timeline-item icon="mdi-arrow-decision-outline" color="green" fill-dot>
+            <v-timeline
+              dense
+              v-if="flow && flowRequest && flowResponse"
+              class="ml-n8"
+            >
+              <v-timeline-item
+                icon="mdi-arrow-decision-outline"
+                color="green"
+                fill-dot
+              >
               </v-timeline-item>
               <v-timeline-item icon="mdi-arrow-left" color="green">
                 <RequestCard :request="flowRequest" />
@@ -102,12 +109,13 @@ export default {
   data: () => {
     return {
       providerAnalysisId: "",
+      providerVersion: "",
     };
   },
   components: {
     LoadingSpinner,
     RequestCard,
-    ResponseCard
+    ResponseCard,
   },
   computed: {
     isInteractionLoading() {
@@ -124,6 +132,9 @@ export default {
     },
     response() {
       return this.$store.getters.getResponseById(this.id);
+    },
+    analysis() {
+      return this.$store.getters.getAnalysisById(this.interaction.analysisId);
     },
     versions() {
       const provider = this.interaction.provider;
@@ -143,9 +154,33 @@ export default {
     flowResponse() {
       return this.$store.getters.getResponseById(this.flow._id);
     },
+    error() {
+      const cmp = this.$store.getters.getCompatibilityByConsumerProviderVersions(
+        this.interaction.projectId,
+        this.analysis.version,
+        this.interaction.provider,
+        this.providerVersion
+      );
+      if (cmp) {
+        if (cmp.status === "PASSED") {
+          return "";
+        } else {
+          const exception = cmp.exceptions.find(
+            (exc) => exc.flow === this.interaction.flow
+          );
+          if (exception) {
+            return exception.error;
+          }
+          return "";
+        }
+      } else {
+        return "Compatibility Results Not Found";
+      }
+    },
   },
   methods: {
     async loadVersion(version) {
+      this.providerVersion = version;
       const providerAnalysis = this.$store.getters.getAnalysisByProjectVersion(
         this.interaction.provider,
         version

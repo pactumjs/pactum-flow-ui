@@ -5,30 +5,15 @@
     </div>
     <div v-else>
       <v-container v-if="flow && request && response">
-        <span class="text-h6">
-          <v-icon small> mdi-arrow-decision-outline </v-icon>
-          Flow
+        <span>
+          <v-icon left> mdi-arrow-decision-outline </v-icon>
+          <span class="text-subtitle-1">{{ flow.name }}</span>
         </span>
-        <v-divider class="my-2"></v-divider>
-        <v-row>
-          <v-col cols="2">
-            <span class="text-caption">
-              <v-icon small> mdi-domain </v-icon>
-              Project
-            </span>
-            <br />
-            <span class="text-subtitle-2">{{ flow.projectId }}</span>
-          </v-col>
-          <v-divider vertical></v-divider>
-          <v-col cols="9">
-            <span class="text-caption">
-              <v-icon small> mdi-arrow-decision-outline </v-icon>
-              Flow
-            </span>
-            <br />
-            <span class="text-subtitle-2">{{ flow.name }}</span>
-          </v-col>
-        </v-row>
+        <br />
+        <span class="ml-8">
+          <span class="text-caption font-weight-bold">{{ flow.projectId }}</span>
+          <span class="text-caption"> ( {{ analysis.version }} )</span>
+        </span>
         <v-divider class="my-2"></v-divider>
         <p class="text-h5 text-center font-weight-bold">{{ flow.projectId }}</p>
         <v-timeline>
@@ -71,6 +56,9 @@ export default {
     },
     response() {
       return this.$store.getters.getResponseById(this.$route.params.id);
+    },
+    analysis() {
+      return this.$store.getters.getAnalysisById(this.flow.analysisId);
     },
   },
   created() {
