@@ -37,53 +37,57 @@
             </v-btn>
           </div>
           <div v-else>
-            <v-dialog v-model="dialog" width="1000">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn class="red--text" text icon v-bind="attrs" v-on="on">
-                  <v-icon dark> mdi-close-thick </v-icon>
-                </v-btn>
-              </template>
-
-              <v-card>
-                <v-card-title class="headline grey lighten-4">
-                  Compatibility Failures
-                </v-card-title>
-
-                <v-card-text>
-                  <v-list-item two-line>
-                    <v-list-item-icon>
-                      <v-icon color="red">mdi-alert-circle-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content
-                      v-for="error in item.exceptions"
-                      :key="error._id"
-                    >
-                      <v-list-item-title>{{ error.flow }}</v-list-item-title>
-                      <v-list-item-subtitle>{{
-                        error.error
-                      }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-card-text>
-
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="red" text @click="dialog = false">
-                    Close
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <v-btn class="red--text" text icon @click="`${openDialog(item)}`">
+              <v-icon dark> mdi-close-thick </v-icon>
+            </v-btn>
           </div>
         </template>
+        <template v-slot:[`item.verifiedAt`]="{ item }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">
+                {{ getRelativeDate(item.verifiedAt) }}
+              </span>
+            </template>
+            <span>{{ new Date(item.verifiedAt) }}</span>
+          </v-tooltip>
+        </template>
       </v-data-table>
+      <v-dialog v-model="dialog" width="1000" :retain-focus="false">
+        <v-card>
+          <v-card-title class="headline grey lighten-4">
+            Compatibility Failures
+          </v-card-title>
+          <v-card-text>
+            <v-list-item two-line>
+              <v-list-item-icon>
+                <v-icon color="red">mdi-alert-circle-outline</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content
+                v-for="exception in selectedItem.exceptions"
+                :key="exception._id"
+              >
+                <v-list-item-title>{{ exception.flow }}</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ exception.error }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red" text @click="dialog = false"> Close </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
 
 <script>
+import rd from "tiny-relative-date";
+
 export default {
   name: "MatrixPage",
   data: () => {
@@ -96,8 +100,10 @@ export default {
         { text: "Consumer", value: "consumer" },
         { text: "Consumer Version", value: "consumerVersion" },
         { text: "Status", value: "status" },
+        { text: "Verified", value: "verifiedAt" },
       ],
       dialog: false,
+      selectedItem: {},
     };
   },
   methods: {
@@ -112,6 +118,13 @@ export default {
         project: this.project,
         version,
       });
+    },
+    getRelativeDate(date) {
+      return rd(date);
+    },
+    openDialog(item) {
+      this.selectedItem = item;
+      this.dialog = true;
     },
   },
   computed: {
