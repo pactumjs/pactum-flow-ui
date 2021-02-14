@@ -85,7 +85,7 @@ export default {
   computed: {
     aid() {
       return this.$store.getters.getProjectAnalysisIdByEnvironment(
-        "latest",
+        this.$store.getters.getSelectedEnvironment(),
         this.project._id
       );
     },

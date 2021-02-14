@@ -8,7 +8,7 @@ export default {
     this.$store.dispatch("LOAD_PROJECTS_PAGE_VIEW").then(() => {
       const projectId = this.$route.params.id;
       const analysisId = this.$store.getters.getProjectAnalysisIdByEnvironment(
-        "latest",
+        this.$store.getters.getSelectedEnvironment(),
         projectId
       );
       if (analysisId) {

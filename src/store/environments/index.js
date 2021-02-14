@@ -2,11 +2,18 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
+    selected: 'latest',
     environments: []
   }
 }
 
 const getters = {
+  getSelectedEnvironment: (state) => () => {
+    return state.selected;
+  },
+  getEnvironments: (state) => () => {
+    return state.environments;
+  },
   getEnvironmentById: (state) => (id) => {
     return state.environments.find(environment => environment._id === id);
   },
@@ -22,6 +29,9 @@ const getters = {
 const mutations = {
   [Mutations.ASSIGN_ENVIRONMENTS](state, environments) {
     state.environments = environments;
+  },
+  [Mutations.UPDATE_ENVIRONMENT](state, environment) {
+    state.selected = environment;
   }
 };
 
@@ -37,6 +47,11 @@ const actions = {
       if (response.ok) {
         commit(Mutations.ASSIGN_ENVIRONMENTS, await response.json());
       }
+    }
+  },
+  async [Actions.CHANGE_ENVIRONMENT]({ commit, state }, env) {
+    if (state.selected !== env) {
+      commit(Mutations.UPDATE_ENVIRONMENT, env);
     }
   }
 }

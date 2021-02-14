@@ -22,8 +22,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="1">
-          </v-col>
+          <v-col cols="1"> </v-col>
           <v-col cols="10">
             <ProjectCard
               v-for="project in projects"
@@ -35,12 +34,23 @@
         </v-row>
       </div>
     </v-container>
+    <EnvironmentSelector />
   </div>
 </template>
+
+<style>
+.v-speed-dial {
+  position: absolute;
+}
+.v-btn--floating {
+  position: relative;
+}
+</style>
 
 <script>
 import LoadingSpinner from "../../components/LoadingSpinner";
 import ProjectCard from "./components/ProjectCard";
+import EnvironmentSelector from "./components/EnvironmentSelector";
 
 export default {
   name: "ProjectsPage",
@@ -52,6 +62,7 @@ export default {
   components: {
     LoadingSpinner,
     ProjectCard,
+    EnvironmentSelector,
   },
   computed: {
     projects() {

@@ -19,7 +19,7 @@ const actions = {
       commit(Mutations.LOADING_PROJECTS, true);
       await dispatch(Actions.FETCH_ENVIRONMENTS);
       await dispatch(Actions.FETCH_PROJECTS);
-      const env = rootGetters.getEnvironmentById('latest');
+      const env = rootGetters.getEnvironmentById(rootGetters.getSelectedEnvironment());
       if (env) {
         const analysesIds = Object.values(env.projects);
         await dispatch(Actions.FETCH_ANALYSES_BY_IDS, analysesIds);
