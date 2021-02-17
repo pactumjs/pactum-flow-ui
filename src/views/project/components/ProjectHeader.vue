@@ -1,19 +1,33 @@
 <template>
-  <div>
-    <v-row>
-      <v-col cols="6">
-        <span class="text-h4">
-          <v-icon color="black" left large>mdi-domain</v-icon>
+  <main>
+    <v-row no-gutters>
+      <v-col cols="10">
+        <span class="text-h5">
+          <v-icon color="black" left>mdi-domain</v-icon>
           <span>{{ name }}</span>
+          <span v-for="gate in gates" :key="gate.environment">
+            <v-chip v-if="gate.status === 'OK'" class="ma-2" color="green darken-2" text-color="white">
+              <v-avatar left>
+                <v-icon>mdi-checkbox-marked-circle</v-icon>
+              </v-avatar>
+              {{ gate.environment }}
+            </v-chip>
+            <v-chip v-else class="ma-2" color="red darken-2" text-color="white">
+              <v-avatar left>
+                <v-icon>mdi-close-circle</v-icon>
+              </v-avatar>
+              {{ gate.environment }}
+            </v-chip>
+          </span>
         </span>
       </v-col>
-      <v-col cols="3"></v-col>
-      <v-col cols="3">
+      <v-col cols="2">
         <v-select
           :items="versions"
           label="Versions"
           outlined
           dense
+          color="black"
           hide-details="true"
           @change="loadVersion"
           v-model="version"
@@ -21,7 +35,7 @@
       </v-col>
     </v-row>
     <v-divider class="mt-1 mb-1"></v-divider>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -30,20 +44,30 @@ export default {
   props: ["name", "analyses"],
   data: function () {
     return {
-      version: this.$route.params.version
-    }
+      version: this.$route.params.version,
+    };
   },
   computed: {
     versions() {
       return this.analyses.map((analysis) => analysis.version);
     },
+    gates() {
+      const res = this.$store.getters.getQualityGateByProjectVersion(
+        this.$route.params.id,
+        this.version
+      );
+      if (res) {
+        return res.gates;
+      }
+      return [];
+    },
   },
   methods: {
     loadVersion(version) {
       this.$router.push({
-        path: `/projects/${this.$route.params.id}/${version}`
+        path: `/projects/${this.$route.params.id}/${version}`,
       });
-    }
-  }
+    },
+  },
 };
 </script>

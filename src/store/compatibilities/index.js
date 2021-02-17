@@ -2,7 +2,8 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
-    compatibilities: []
+    compatibilities: [],
+    loadedProjectVersions: []
   }
 }
 
@@ -20,7 +21,8 @@ const getters = {
 }
 
 const mutations = {
-  [Mutations.ADD_COMPATIBILITIES](state, compatibilities) {
+  [Mutations.ADD_COMPATIBILITIES](state, { compatibilities, project, version }) {
+    state.loadedProjectVersions.push(`${project}::${version}`);
     const filtered = compatibilities.filter(cc => {
       return !state.compatibilities.find(sc => sc._id === cc._id);
     });
@@ -29,10 +31,16 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION]({ commit }, { project, version }) {
-    const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}&version=${version}`);
-    if (response.ok) {
-      commit(Mutations.ADD_COMPATIBILITIES, await response.json());
+  async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION]({ commit, state }, { project, version }) {
+    if (!state.loadedProjectVersions.includes(`${project}::${version}`)) {
+      const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}&version=${version}`);
+      if (response.ok) {
+        commit(Mutations.ADD_COMPATIBILITIES, {
+          project,
+          version,
+          compatibilities: await response.json()
+        });
+      }
     }
   }
 }

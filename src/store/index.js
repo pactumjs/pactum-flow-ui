@@ -14,6 +14,7 @@ import Interactions from './interactions'
 import Flows from './flows'
 import Exchange from './exchange'
 import Compatibilities from './compatibilities'
+import QualityGate from './qg'
 
 Vue.use(Vuex)
 
@@ -32,7 +33,8 @@ const modules = {
   Interactions,
   Flows,
   Exchange,
-  Compatibilities
+  Compatibilities,
+  QualityGate
 }
 
 export default new Vuex.Store({

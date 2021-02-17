@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <v-container>
       <h5 class="text-h5">Compatibility Matrix</h5>
       <v-divider class="my-1"></v-divider>
@@ -10,6 +10,7 @@
             outlined
             dense
             label="Project"
+            color="black"
             @change="getProjectAnalysis"
           ></v-select>
         </v-col>
@@ -19,6 +20,7 @@
             outlined
             dense
             label="Version"
+            color="black"
             @change="getCompatibilityResults"
           ></v-select>
         </v-col>
@@ -30,6 +32,18 @@
         class="elevation-1"
         v-if="project && version"
       >
+        <template v-slot:[`item.providerVersion`]="{ item }">
+          {{ item.providerVersion }}
+          <span v-if="projectEnvs && projectEnvs[item.provider] && projectEnvs[item.provider][item.providerVersion]">
+            <v-chip class="mr-1" small v-for="env in projectEnvs[item.provider][item.providerVersion]" :key="env">{{ env }}</v-chip>
+          </span>
+        </template>
+        <template v-slot:[`item.consumerVersion`]="{ item }">
+          {{ item.consumerVersion }}
+          <span v-if="projectEnvs && projectEnvs[item.consumer] && projectEnvs[item.consumer][item.consumerVersion]">
+            <v-chip class="mr-1" small v-for="env in projectEnvs[item.consumer][item.consumerVersion]" :key="env">{{ env }}</v-chip>
+          </span>
+        </template>
         <template v-slot:[`item.status`]="{ item }">
           <div v-if="item.status === 'PASSED'">
             <v-btn disabled text icon>
@@ -82,7 +96,7 @@
         </v-card>
       </v-dialog>
     </v-container>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -144,6 +158,29 @@ export default {
         this.version
       );
     },
+    projectEnvs() {
+      const projectEnvs = {};
+      const envs = this.$store.getters.getEnvironments();
+      for (let i = 0; i < envs.length; i ++) {
+        const env = envs[i];
+        const projects = Object.keys(env.projects);
+        for (let j = 0; j < projects.length; j ++) {
+          const project = projects[j];
+          const analysisId = env.projects[project];
+          const analysis = this.$store.getters.getAnalysisById(analysisId);
+          if (analysis) {
+            if (!projectEnvs[project]) {
+              projectEnvs[project] = {};
+            }
+            if (!projectEnvs[project][analysis.version]) {
+              projectEnvs[project][analysis.version] = [];
+            }
+            projectEnvs[project][analysis.version].push(env._id);
+          }
+        }
+      }
+      return projectEnvs;
+    }
   },
   created() {
     this.$store.dispatch("LOAD_MATRIX_PAGE_VIEW");
