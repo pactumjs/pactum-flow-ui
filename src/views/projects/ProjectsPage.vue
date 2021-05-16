@@ -4,6 +4,23 @@
       <div v-if="isProjectsLoading">
         <LoadingSpinner />
       </div>
+      <div v-else-if="projects.length === 0">
+        <ResourceNotFound :message="'No Projects Found'">
+          <p class="font-weight-bold">
+            Once you analyze some projects, they will show up here.
+          </p>
+          <v-btn
+            x-large
+            href="https://pactumjs.github.io/#/contract-testing"
+            target="_blank"
+            outlined
+            class="blue--text mt-2"
+          >
+            Get Started - Contract Testing
+            <v-icon right dark> mdi-play </v-icon>
+          </v-btn>
+        </ResourceNotFound>
+      </div>
       <div v-else>
         <v-row no-gutters>
           <v-col cols="1"></v-col>
@@ -49,6 +66,7 @@
 
 <script>
 import LoadingSpinner from "../../components/LoadingSpinner";
+import ResourceNotFound from "../../components/ResourceNotFound";
 import ProjectCard from "./components/ProjectCard";
 import EnvironmentSelector from "./components/EnvironmentSelector";
 
@@ -61,6 +79,7 @@ export default {
   },
   components: {
     LoadingSpinner,
+    ResourceNotFound,
     ProjectCard,
     EnvironmentSelector,
   },

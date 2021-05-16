@@ -16,12 +16,6 @@
             Test Pyramid
           </a>
         </p>
-        <p>⏱ Swift</p>
-        <p>🎈 Lightweight</p>
-        <p>🚀 Simple & Powerful</p>
-        <p>🔧 Extendable & Customizable</p>
-        <p>📚 Clear & Comprehensive Testing Style</p>
-        <p>🔗 Component, Contract & E2E testing of APIs</p>
         <v-btn
           dark
           x-large
