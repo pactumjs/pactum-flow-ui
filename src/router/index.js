@@ -52,6 +52,10 @@ const routes = [
       {
         path: 'providers',
         component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectProviders.vue')
+      },
+      {
+        path: 'quality-gates',
+        component: () => import(/* webpackChunkName: "project" */ '../views/project/children/ProjectQualityGates.vue')
       }
     ]
   },

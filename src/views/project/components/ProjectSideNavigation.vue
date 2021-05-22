@@ -33,6 +33,7 @@ export default {
         { title: "interactions", icon: "mdi-swap-horizontal" },
         { title: "consumers", icon: "mdi-download-outline" },
         { title: "providers", icon: "mdi-upload-outline" },
+        { title: "quality-gates", icon: "mdi-shield-plus-outline" },
       ],
       selected: [0],
     };
