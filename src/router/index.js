@@ -12,8 +12,23 @@ const routes = [
   },
   {
     path: '/matrix',
-    name: 'Matrix',
-    component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue')
+    component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue'),
+    children: [
+      {
+        path: '',
+        redirect: 'compatibility'
+      },
+      {
+        path: 'compatibility',
+        name: 'Compatibility',
+        component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/CompatibilityPage.vue')
+      },
+      {
+        path: 'network',
+        name: 'Network',
+        component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/NetworkPage.vue')
+      }
+    ]
   },
   {
     path: '/projects',

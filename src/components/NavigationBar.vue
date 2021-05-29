@@ -16,7 +16,23 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
+      <v-menu offset-y open-on-hover>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="yellow--text overline" :to="'/matrix'" v-bind="attrs" v-on="on" text>
+            Matrix
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(matrix, index) in matrices"
+            :key="index"
+            link
+            :to="matrix.path"
+          >
+            <v-list-item-title>{{ matrix.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn class="yellow--text overline" :to="'/projects'" text>
         Projects
       </v-btn>
@@ -34,5 +50,11 @@
 <script>
 export default {
   name: "NavigationBar",
+  data: () => ({
+    matrices: [
+      { title: "Compatibility", path: "/matrix/compatibility" },
+      { title: "Network", path: "/matrix/network" },
+    ],
+  }),
 };
 </script>
