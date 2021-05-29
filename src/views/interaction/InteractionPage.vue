@@ -13,10 +13,8 @@
             </span>
             <br />
             <span class="ml-8">
-              <span class="text-caption font-weight-bold">{{
-                interaction.projectId
-              }}</span>
-              <span class="text-caption"> ( {{ analysis.version }} ) </span>
+              <span class="text-caption font-weight-bold">{{ consumer }}</span>
+              <span class="text-caption"> ( {{ consumerVersion }} ) </span>
               <v-icon left> mdi-arrow-left-right </v-icon>
               <span class="text-caption font-weight-bold">{{
                 interaction.provider
@@ -36,7 +34,7 @@
           </v-col>
           <v-col cols="2">
             <v-select
-              :items="versions"
+              :items="providerVersions"
               outlined
               dense
               label="Provider Version"
@@ -136,10 +134,19 @@ export default {
     analysis() {
       return this.$store.getters.getAnalysisById(this.interaction.analysisId);
     },
-    versions() {
-      const provider = this.interaction.provider;
-      const analyses = this.$store.getters.getAnalysisByProject(provider);
-      return analyses.map((analysis) => analysis.version);
+    consumer() {
+      return this.interaction.projectId;
+    },
+    consumerVersion() {
+      return this.analysis.version;
+    },
+    provider() {
+      return this.interaction.provider;
+    },
+    providerVersions() {
+      return this.$store.getters
+        .getAnalysisByProject(this.interaction.provider)
+        .map((analysis) => analysis.version);
     },
     flow() {
       return this.$store.getters.getFlowByName(
@@ -155,40 +162,51 @@ export default {
       return this.$store.getters.getResponseById(this.flow._id);
     },
     error() {
-      const cmp = this.$store.getters.getCompatibilityByConsumerProviderVersions(
-        this.interaction.projectId,
-        this.analysis.version,
-        this.interaction.provider,
-        this.providerVersion
-      );
-      if (cmp) {
-        if (cmp.status === "PASSED") {
-          return "";
-        } else {
-          const exception = cmp.exceptions.find(
-            (exc) => exc.flow === this.interaction.flow
-          );
-          if (exception) {
-            return exception.error;
+      if (this.providerVersion) {
+        const results = this.$store.getters.getCompatibilityResults({
+          consumer: this.consumer,
+          consumerVersion: this.consumerVersion,
+          provider: this.provider,
+          providerVersion: this.providerVersion,
+        });
+        if (results.length > 0) {
+          const result = results[0];
+          if (result.status === "PASSED") {
+            return "";
+          } else {
+            const exception = result.exceptions.find(
+              (exc) => exc.flow === this.interaction.flow
+            );
+            if (exception) {
+              return exception.error;
+            }
+            return "";
           }
-          return "";
         }
-      } else {
         return "Compatibility Results Not Found";
       }
+      return "";
     },
   },
   methods: {
-    async loadVersion(version) {
-      this.providerVersion = version;
+    async loadVersion(providerVersion) {
+      this.providerVersion = providerVersion;
       const providerAnalysis = this.$store.getters.getAnalysisByProjectVersion(
-        this.interaction.provider,
-        version
+        this.provider,
+        providerVersion
       );
-      await this.$store.dispatch(
-        "FETCH_FLOWS_BY_ANALYSIS_ID",
-        providerAnalysis._id
-      );
+      await Promise.all([
+        this.$store.dispatch("FETCH_COMPATIBILITIES", {
+          consumer: this.consumer,
+          consumerVersion: this.consumerVersion,
+          provider: this.provider,
+          providerVersion: providerVersion,
+        }),
+        this.$store.dispatch(
+          "FETCH_FLOWS_BY_ANALYSIS_ID",
+          providerAnalysis._id
+        ),
+      ]);
       this.providerAnalysisId = providerAnalysis._id;
       if (this.flow) {
         this.$store.dispatch("FETCH_REQUEST_BY_ID", this.flow._id);

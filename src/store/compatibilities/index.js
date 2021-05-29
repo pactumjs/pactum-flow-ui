@@ -1,43 +1,61 @@
 import { Actions, Mutations } from '../types';
 
+function getKey({ consumer, consumerVersion, provider, providerVersion }) {
+  let key = consumer;
+  if (consumerVersion) key = key + `-${consumerVersion}`;
+  key = key + `::${provider}`;
+  if (providerVersion) key = key + `-${providerVersion}`;
+  return key;
+}
+
 const state = () => {
   return {
     compatibilities: [],
-    loadedProjectVersions: []
+    // list of loaded providers & consumers used to avoid duplicate requests
+    keys: []
   }
 }
 
 const getters = {
-  getCompatibilityByProjectVersion: (state) => (project, version) => {
+  getCompatibilityResults: (state) => ({ consumer, consumerVersion, provider, providerVersion }) => {
     return state.compatibilities.filter(cty => {
-      return (cty.consumer === project && cty.consumerVersion === version) || (cty.provider === project && cty.providerVersion === version);
-    });
-  },
-  getCompatibilityByConsumerProviderVersions: (state) => (consumer, consumerVersion, provider, providerVersion) => {
-    return state.compatibilities.find(cty => {
-      return cty.consumer === consumer && cty.consumerVersion === consumerVersion && cty.provider === provider && cty.providerVersion === providerVersion;
+      let result = true;
+      if (consumer && (cty.consumer !== consumer)) result = false;
+      if (consumerVersion && (cty.consumerVersion !== consumerVersion)) result = false;
+      if (provider && (cty.provider !== provider)) result = false;
+      if (providerVersion && (cty.providerVersion !== providerVersion)) result = false;
+      return result;
     });
   }
 }
 
 const mutations = {
-  [Mutations.ADD_COMPATIBILITIES](state, { compatibilities, project, version }) {
-    state.loadedProjectVersions.push(`${project}::${version}`);
+  [Mutations.ADD_COMPATIBILITIES](state, { consumer, consumerVersion, provider, providerVersion, compatibilities }) {
     const filtered = compatibilities.filter(cc => {
       return !state.compatibilities.find(sc => sc._id === cc._id);
     });
+    state.keys.push(getKey({ consumer, consumerVersion, provider, providerVersion }));
     state.compatibilities = state.compatibilities.concat(filtered);
   }
 };
 
 const actions = {
-  async [Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION]({ commit, state }, { project, version }) {
-    if (!state.loadedProjectVersions.includes(`${project}::${version}`)) {
-      const response = await fetch(`/api/flow/v1/compatibility?projectId=${project}&version=${version}`);
+  async [Actions.FETCH_COMPATIBILITIES]({ commit, state, getters }, { consumer, consumerVersion, provider, providerVersion }) {
+    const key = getKey({ consumer, consumerVersion, provider, providerVersion });
+    if (!state.keys.includes(key)) {
+      if (consumerVersion && providerVersion) {
+        const results = getters.getCompatibilityResults({ consumer, consumerVersion, provider, providerVersion });
+        if (results.length !== 0) {
+          return;
+        }
+      }
+      let qs = '';
+      if (consumerVersion) qs = qs + `&consumerVersion=${consumerVersion}`;
+      if (providerVersion) qs = qs + `&providerVersion=${providerVersion}`;
+      const response = await fetch(`/api/flow/v1/compatibility?consumer=${consumer}&provider=${provider}${qs}`);
       if (response.ok) {
         commit(Mutations.ADD_COMPATIBILITIES, {
-          project,
-          version,
+          consumer, consumerVersion, provider, providerVersion,
           compatibilities: await response.json()
         });
       }

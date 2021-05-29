@@ -1,15 +1,25 @@
 <template>
   <v-app-bar dark app dense>
+    <a href="/#/">
+      <img
+        height="22"
+        src="@/assets/logo-icon.svg"
+        alt="logo"
+        class="mr-2 mt-2"
+      />
+    </a>
     <v-toolbar-title>
-      <a class="pactum overline" href="/#/">
-      <span class="overline yellow--text">pactum</span>
-      <span class="overline yellow black--text pa-1">js</span>
+      <a class="pactum" href="/#/">
+        <span class="overline yellow--text">pactum</span>
+        <span class="overline yellow black--text pa-1">js</span>
       </a>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-items >
+    <v-toolbar-items>
       <v-btn class="yellow--text overline" :to="'/matrix'" text> Matrix </v-btn>
-      <v-btn class="yellow--text overline" :to="'/projects'" text> Projects </v-btn>
+      <v-btn class="yellow--text overline" :to="'/projects'" text>
+        Projects
+      </v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>
@@ -17,12 +27,12 @@
 <style scoped>
 .pactum {
   text-decoration: none;
-  color: #FFEB3B;
+  color: #ffeb3b;
 }
 </style>
 
 <script>
 export default {
-  name: "NavigationBar"
+  name: "NavigationBar",
 };
 </script>

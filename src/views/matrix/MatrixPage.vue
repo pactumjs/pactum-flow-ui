@@ -9,39 +9,82 @@
             :items="projects"
             outlined
             dense
-            label="Project"
+            label="Provider"
             color="black"
-            @change="getProjectAnalysis"
+            @change="getProviderAnalysis"
           ></v-select>
         </v-col>
         <v-col>
           <v-select
-            :items="versions"
+            :items="providerVersions"
             outlined
             dense
-            label="Version"
+            label="ProviderVersion"
             color="black"
-            @change="getCompatibilityResults"
+            @change="setProviderVersion"
           ></v-select>
         </v-col>
-        <v-col></v-col>
+        <v-col>
+          <v-select
+            :items="projects"
+            outlined
+            dense
+            label="Consumer"
+            color="black"
+            @change="getConsumerAnalysis"
+          ></v-select>
+        </v-col>
+        <v-col>
+          <v-select
+            :items="consumerVersions"
+            outlined
+            dense
+            label="ConsumerVersion"
+            color="black"
+            @change="setConsumerVersion"
+          ></v-select>
+        </v-col>
       </v-row>
       <v-data-table
         :headers="headers"
         :items="compatibilities"
         class="elevation-1"
-        v-if="project && version"
+        v-if="provider && consumer"
       >
         <template v-slot:[`item.providerVersion`]="{ item }">
           {{ item.providerVersion }}
-          <span v-if="projectEnvs && projectEnvs[item.provider] && projectEnvs[item.provider][item.providerVersion]">
-            <v-chip class="mr-1" small v-for="env in projectEnvs[item.provider][item.providerVersion]" :key="env">{{ env }}</v-chip>
+          <span
+            v-if="
+              projectEnvs &&
+              projectEnvs[item.provider] &&
+              projectEnvs[item.provider][item.providerVersion]
+            "
+          >
+            <v-chip
+              class="mr-1"
+              small
+              v-for="env in projectEnvs[item.provider][item.providerVersion]"
+              :key="env"
+              >{{ env }}</v-chip
+            >
           </span>
         </template>
         <template v-slot:[`item.consumerVersion`]="{ item }">
           {{ item.consumerVersion }}
-          <span v-if="projectEnvs && projectEnvs[item.consumer] && projectEnvs[item.consumer][item.consumerVersion]">
-            <v-chip class="mr-1" small v-for="env in projectEnvs[item.consumer][item.consumerVersion]" :key="env">{{ env }}</v-chip>
+          <span
+            v-if="
+              projectEnvs &&
+              projectEnvs[item.consumer] &&
+              projectEnvs[item.consumer][item.consumerVersion]
+            "
+          >
+            <v-chip
+              class="mr-1"
+              small
+              v-for="env in projectEnvs[item.consumer][item.consumerVersion]"
+              :key="env"
+              >{{ env }}</v-chip
+            >
           </span>
         </template>
         <template v-slot:[`item.status`]="{ item }">
@@ -106,8 +149,10 @@ export default {
   name: "MatrixPage",
   data: () => {
     return {
-      project: "",
-      version: "",
+      consumer: "",
+      consumerVersion: "",
+      provider: "",
+      providerVersion: "",
       headers: [
         { text: "Provider", value: "provider" },
         { text: "Provider Version", value: "providerVersion" },
@@ -121,17 +166,36 @@ export default {
     };
   },
   methods: {
-    getProjectAnalysis(project) {
-      this.project = project;
-      this.version = "";
+    getProviderAnalysis(project) {
+      this.provider = project;
+      this.providerVersion = "";
       this.$store.dispatch("FETCH_ANALYSES_BY_PROJECT", project);
+      this.getCompatibilityResults();
     },
-    getCompatibilityResults(version) {
-      this.version = version;
-      this.$store.dispatch("FETCH_COMPATIBILITIES_BY_PROJECT_VERSION", {
-        project: this.project,
-        version,
-      });
+    getConsumerAnalysis(project) {
+      this.consumer = project;
+      this.consumerVersion = "";
+      this.$store.dispatch("FETCH_ANALYSES_BY_PROJECT", project);
+      this.getCompatibilityResults();
+    },
+    setProviderVersion(version) {
+      this.providerVersion = version;
+      this.getCompatibilityResults();
+    },
+    setConsumerVersion(version) {
+      this.consumerVersion = version;
+      this.getCompatibilityResults();
+    },
+    getCompatibilityResults() {
+      if (this.provider && this.consumer) {
+        const query = {
+          provider: this.provider,
+          consumer: this.consumer,
+        };
+        if (this.providerVersion) query.providerVersion = this.providerVersion;
+        if (this.consumerVersion) query.consumerVersion = this.consumerVersion;
+        this.$store.dispatch("FETCH_COMPATIBILITIES", query);
+      }
     },
     getRelativeDate(date) {
       return rd(date);
@@ -145,26 +209,33 @@ export default {
     projects() {
       return this.$store.state.Projects.projects.map((project) => project._id);
     },
-    versions() {
-      if (this.project) {
-        const analyses = this.$store.getters.getAnalysisByProject(this.project);
-        return analyses.map((analysis) => analysis.version);
+    consumerVersions() {
+      if (this.consumer) {
+        return this.$store.getters.getAnalysisByProject(this.consumer).map((analysis) => analysis.version);
+      }
+      return [];
+    },
+    providerVersions() {
+      if (this.provider) {
+         return this.$store.getters.getAnalysisByProject(this.provider).map((analysis) => analysis.version);
       }
       return [];
     },
     compatibilities() {
-      return this.$store.getters.getCompatibilityByProjectVersion(
-        this.project,
-        this.version
-      );
+      return this.$store.getters.getCompatibilityResults({
+        consumer: this.consumer,
+        consumerVersion: this.consumerVersion,
+        provider: this.provider,
+        providerVersion: this.providerVersion
+      });
     },
     projectEnvs() {
       const projectEnvs = {};
       const envs = this.$store.getters.getEnvironments();
-      for (let i = 0; i < envs.length; i ++) {
+      for (let i = 0; i < envs.length; i++) {
         const env = envs[i];
         const projects = Object.keys(env.projects);
-        for (let j = 0; j < projects.length; j ++) {
+        for (let j = 0; j < projects.length; j++) {
           const project = projects[j];
           const analysisId = env.projects[project];
           const analysis = this.$store.getters.getAnalysisById(analysisId);
@@ -180,7 +251,7 @@ export default {
         }
       }
       return projectEnvs;
-    }
+    },
   },
   created() {
     this.$store.dispatch("LOAD_MATRIX_PAGE_VIEW");

@@ -29,14 +29,6 @@ const actions = {
           dispatch(Actions.FETCH_PROJECT_BY_ID, interaction.provider),
           dispatch(Actions.FETCH_ANALYSES_BY_PROJECT, interaction.provider)
         ]);
-        const analysis = rootGetters.getAnalysisById(interaction.analysisId);
-        if (analysis) {
-          const pv = {
-            project: interaction.projectId,
-            version: analysis.version
-          }
-          await dispatch(Actions.FETCH_COMPATIBILITIES_BY_PROJECT_VERSION, pv);
-        }
       }
     } catch (error) {
       console.log(error);

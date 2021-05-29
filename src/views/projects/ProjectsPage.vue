@@ -50,8 +50,8 @@
           </v-col>
         </v-row>
       </div>
+      <EnvironmentSelector />
     </v-container>
-    <EnvironmentSelector />
   </div>
 </template>
 
