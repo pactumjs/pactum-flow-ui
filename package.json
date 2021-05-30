@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "d3": "^4.12.2",
     "tiny-relative-date": "^1.3.0",
     "vue": "^2.6.11",
     "vue-prism": "^1.0.5",

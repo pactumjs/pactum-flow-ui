@@ -15,6 +15,7 @@ import Flows from './flows'
 import Exchange from './exchange'
 import Compatibilities from './compatibilities'
 import QualityGate from './qg'
+import Relations from './relations'
 
 Vue.use(Vuex)
 
@@ -34,7 +35,8 @@ const modules = {
   Flows,
   Exchange,
   Compatibilities,
-  QualityGate
+  QualityGate,
+  Relations
 }
 
 export default new Vuex.Store({

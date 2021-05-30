@@ -1,21 +1,24 @@
 <template>
   <div class="home mt-6">
     <v-container>
+      
       <div class="text-center">
-        <div class="mb-6">
-          <span class="text-h2 mr-2">PACTUM</span>
-          <span class="text-h2 black yellow--text pl-2 pr-2">JS</span>
+        <img
+        height="250"
+        src="@/assets/logo-icon.svg"
+        alt="logo"
+      />
+        <div class="my-6">
+          <span class="v-heading text-h3">REST API Testing Library</span>
         </div>
-        <v-divider class="mb-4"></v-divider>
-        <p class="text-h6 mb-8">
-          Free & Open Source REST API testing tool for all levels in a
+        <p class="mx-auto" style="max-width: 668px;">
+          PactumJS is a free and open source REST API testing library for all levels in a
           <a
             href="https://martinfowler.com/articles/practical-test-pyramid.html"
             target="_blank"
-          >
-            Test Pyramid
-          </a>
-        </p>
+          >Test Pyramid</a>.
+          Supports component, contract & e2e testing of APIs.
+         </p>
         <v-btn
           dark
           x-large

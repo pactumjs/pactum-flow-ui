@@ -1,61 +1,54 @@
 <template>
   <main>
     <h3>Network Page</h3>
-    <p class="text-caption">Links between projects are random.</p>
-    <div class="text-center pa-10">
-      <hierarchical-edge-bundling
-        identifier="id"
-        node-text="name"
-        class="graph-root"
-        :data="tree"
-        :links="links"
-        :linkTypes="linkTypes"
-      />
+    <div v-if="tree.length > 0">
+      <Edge :tree="tree" :diameter="diameter" :key="diameter"/>
+      <Zoom @zoom="zoom"/>
     </div>
   </main>
 </template>
 
-<style scoped>
-.graph-root {
-  height: 600px;
-  width: 100%;
-}
-</style>
-
 <script>
-import { hierarchicalEdgeBundling } from "vued3tree";
+import Edge from "./components/Edge";
+import Zoom from "./components/Zoom";
 
 export default {
   name: "NetworkPage",
+  data() {
+    return {
+      diameter: 600
+    }
+  },
   components: {
-    hierarchicalEdgeBundling,
+    Edge,
+    Zoom
   },
   computed: {
     tree() {
-      const projects = this.$store.state.Projects.projects;
-      const children = [];
-      for (let i = 0; i < projects.length; i++) {
-        children.push({
-          name: projects[i]._id,
-          id: i,
-        });
+      const _tree = []
+      const relations = this.$store.getters.getRelations();
+      for (let i = 0; i < relations.length; i++) {
+        const relation = relations[i];
+        _tree.push({
+          name: relation.projectId,
+          imports: relation.consumers
+        })
       }
-      return {
-        name: "projects",
-        children,
-      };
-    },
-    links() {
-      const projects = this.$store.state.Projects.projects;
-      const links = [];
-      for (let i = 1; i < projects.length; i++) {
-        links.push({ source: i - 1, target: i, type: 1 })
+      return _tree;
+    }
+  },
+  methods: {
+    zoom(event) {
+      if (event === '+') {
+        this.diameter = this.diameter + 100;
       }
-      return links;
-    },
+      if (event === '-' && this.diameter > 300) {
+        this.diameter = this.diameter - 100;
+      }
+    }
   },
   created() {
-    this.$store.dispatch("LOAD_MATRIX_PAGE_VIEW");
+    this.$store.dispatch("FETCH_RELATIONS");
   },
 };
 </script>
