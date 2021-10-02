@@ -98,12 +98,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "interactions" */ '../views/interaction/InteractionPage.vue'),
     meta: { requiresAuth: true }
   },
-  {
-    path: '/logout',
-    name: 'Logout',
-    component: () => import(/* webpackChunkName: "login" */ '../views/authentication/LogoutPage.vue'),
-    meta: { requiresAuth: false }
-  }
 ]
 
 const router = new VueRouter({

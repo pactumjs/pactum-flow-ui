@@ -3,18 +3,16 @@
     <v-snackbar
       v-model="snackbar"
       :timeout="timeout"
-      transition="slide-x-reverse-transition"
       color="red"
       absolute
-      right
       rounded="pill"
       top
     >
       Invalid Credentials. Please try again!.
     </v-snackbar>
     <v-card width="400" class="mx-auto my-auto">
-      <v-card-title class="justify-center pb-0">
-        <h2>Login</h2>
+      <v-card-title class="justify-center my-2">
+        <h2>Welcome Back!</h2>
       </v-card-title>
       <v-card-text>
         <v-form v-model="isValid" class="login">
@@ -23,6 +21,7 @@
             :rules="userNameRules"
             label="Username"
             prepend-icon="mdi-account-circle"
+            color="black"
             required
           />
           <v-text-field
@@ -33,17 +32,19 @@
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
+            color="black"
           />
         </v-form>
       </v-card-text>
-      <v-divider></v-divider>
       <v-card-actions class="justify-end">
         <v-btn
           v-on:click="handleSubmit"
           color="black"
           :disabled="!isValid"
           class="yellow--text"
-          >Login</v-btn
+          block
+          large
+          >Log In</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -71,7 +72,7 @@ export default {
       submitted: false,
       showPassword: false,
       isValid: true,
-      userNameRules: [(v) => !!v || "Username is required"],
+      userNameRules: [(v) => !!v || "Username is required!"],
       passwordRules: [(v) => !!v || "Password is required!"],
     };
   },

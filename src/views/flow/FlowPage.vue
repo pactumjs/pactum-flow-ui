@@ -17,7 +17,6 @@
         <v-divider class="my-2"></v-divider>
         <p
           class="text-h5 text-center font-weight-bold"
-          v-on:click="navToFlows(flow.projectId)"
         >
           <v-icon> mdi-domain </v-icon>
           {{ flow.projectId }}
@@ -69,11 +68,6 @@ export default {
   },
   created() {
     this.$store.dispatch("LOAD_FLOW_PAGE_VIEW", this.$route.params.id);
-  },
-  methods: {
-    navToFlows: function (route) {
-      this.$router.push(`/projects/${route}/flows`);
-    },
-  },
+  }
 };
 </script>

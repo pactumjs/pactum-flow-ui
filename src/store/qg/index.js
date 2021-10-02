@@ -23,9 +23,13 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_QUALITY_GATE_STATUS_BY_PROJECT_VERSION]({ commit, state }, { project, version }) {
+  async [Actions.FETCH_QUALITY_GATE_STATUS_BY_PROJECT_VERSION]({ commit, state, rootGetters }, { project, version }) {
     if (!state.loadedProjectVersions.includes(`${project}::${version}`)) {
-      const response = await fetch(`/api/flow/v1/quality-gate/status?projectId=${project}&version=${version}`);
+      const response = await fetch(`/api/flow/v1/quality-gate/status?projectId=${project}&version=${version}`, {
+        headers: {
+          'X-Session-Token': rootGetters.getToken()
+        }
+      });
       if (response.ok) {
         commit(Mutations.ADD_QUALITY_GATE_STATUS, {
           project,

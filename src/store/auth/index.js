@@ -3,29 +3,30 @@ import { Actions, Mutations } from '../types';
 const state = () => {
   return {
     user: null,
-    accessToken: null
+    token: null
   }
 }
 
 const getters = {
-  isAuthenticated: state => !!state.user,
-  loggedInUser: state => state.user,
+  isAuthenticated: state => state.user && state.token,
+  getUser: state => state.user,
+  getToken: state => () => state.token
 }
 
 const mutations = {
   [Mutations.SAVE_SESSION](state, userSession) {
     state.user = userSession['username'];
-    state.accessToken = userSession['sessionToken'];
+    state.token = userSession['token'];
   },
   [Mutations.INVALIDATE_SESSION](state) {
     state.user = null;
-    state.accessToken = null;
+    state.token = null;
   }
 };
 
 const actions = {
   async [Actions.LOGIN]({ commit }, userCreds) {
-    const buff = new Buffer(`${userCreds.username}:${userCreds.password}`);
+    const buff = Buffer.from(`${userCreds.username}:${userCreds.password}`);
     const base64data = buff.toString('base64');
     const response = await fetch('/api/flow/captain/v1/session', {
       method: 'POST',
@@ -41,18 +42,9 @@ const actions = {
     return Promise.resolve(response.status);
   },
 
-  async [Actions.LOGOUT]({ state, commit }) {
-    const response = await fetch('/api/flow/captain/v1/session?username=' + state.user, {
-      method: 'DELETE',
-      headers: {
-        'X-Access-Token': state.accessToken
-      }
-    });
-    if (!response.ok) {
-      return Promise.reject(new Error(response.status));
-    }
+  async [Actions.LOGOUT]({ commit }) {
     commit(Mutations.INVALIDATE_SESSION);
-    return Promise.resolve(response.status);
+    localStorage.clear();
   }
 }
 
