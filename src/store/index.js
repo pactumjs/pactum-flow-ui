@@ -18,7 +18,6 @@ import Auth from './auth'
 import Compatibilities from './compatibilities'
 import QualityGate from './qg'
 import Relations from './relations'
-import Auth from './auth'
 
 Vue.use(Vuex)
 
