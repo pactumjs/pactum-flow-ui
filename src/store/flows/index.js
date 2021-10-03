@@ -43,12 +43,13 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_FLOWS_BY_ANALYSIS_ID]({ commit, state }, id) {
+  async [Actions.FETCH_FLOWS_BY_ANALYSIS_ID]({ commit, state, rootGetters }, id) {
     if (!state.loadedAnalyses.includes(id)) {
       const response = await fetch(`/api/flow/v1/flows?analysisId=${id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Session-Token': rootGetters.getToken()
         }
       });
       if (response.ok) {
@@ -57,12 +58,13 @@ const actions = {
       }
     }
   },
-  async [Actions.FETCH_FLOW_BY_ID]({ getters, commit }, id) {
+  async [Actions.FETCH_FLOW_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getFlowById(id)) {
       const response = await fetch(`/api/flow/v1/flows/${id}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Session-Token': rootGetters.getToken()
         }
       });
       if (response.ok) {

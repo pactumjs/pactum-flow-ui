@@ -40,7 +40,7 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_COMPATIBILITIES]({ commit, state, getters }, { consumer, consumerVersion, provider, providerVersion }) {
+  async [Actions.FETCH_COMPATIBILITIES]({ commit, state, getters, rootGetters }, { consumer, consumerVersion, provider, providerVersion }) {
     const key = getKey({ consumer, consumerVersion, provider, providerVersion });
     if (!state.keys.includes(key)) {
       if (consumerVersion && providerVersion) {
@@ -52,7 +52,11 @@ const actions = {
       let qs = '';
       if (consumerVersion) qs = qs + `&consumerVersion=${consumerVersion}`;
       if (providerVersion) qs = qs + `&providerVersion=${providerVersion}`;
-      const response = await fetch(`/api/flow/v1/compatibility?consumer=${consumer}&provider=${provider}${qs}`);
+      const response = await fetch(`/api/flow/v1/compatibility?consumer=${consumer}&provider=${provider}${qs}`, {
+        headers: {
+          'X-Session-Token': rootGetters.getToken()
+        }
+      });
       if (response.ok) {
         commit(Mutations.ADD_COMPATIBILITIES, {
           consumer, consumerVersion, provider, providerVersion,

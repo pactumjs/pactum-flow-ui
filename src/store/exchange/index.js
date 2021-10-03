@@ -27,17 +27,25 @@ const mutations = {
 
 
 const actions = {
-  async [Actions.FETCH_REQUEST_BY_ID]({ getters, commit }, id) {
+  async [Actions.FETCH_REQUEST_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getRequestById(id)) {
-      const response = await fetch(`/api/flow/v1/requests/${id}`);
+      const response = await fetch(`/api/flow/v1/requests/${id}`, {
+        headers: {
+          'X-Session-Token': rootGetters.getToken()
+        }
+      });
       if (response.ok) {
         commit(Mutations.ADD_REQUEST, await response.json());
       }
     }
   },
-  async [Actions.FETCH_RESPONSE_BY_ID]({ getters, commit }, id) {
+  async [Actions.FETCH_RESPONSE_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getResponseById(id)) {
-      const response = await fetch(`/api/flow/v1/responses/${id}`);
+      const response = await fetch(`/api/flow/v1/responses/${id}`, {
+        headers: {
+          'X-Session-Token': rootGetters.getToken()
+        }
+      });
       if (response.ok) {
         commit(Mutations.ADD_RESPONSE, await response.json());
       }

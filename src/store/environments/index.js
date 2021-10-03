@@ -36,12 +36,13 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_ENVIRONMENTS]({ commit, state }) {
+  async [Actions.FETCH_ENVIRONMENTS]({ commit, state, rootGetters }) {
     if (state.environments.length === 0) {
       const response = await fetch(`/api/flow/v1/environments`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-Session-Token': rootGetters.getToken()
         }
       });
       if (response.ok) {

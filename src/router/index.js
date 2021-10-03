@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -8,10 +9,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/authentication/LoginPage.vue'),
+    meta: { requiresAuth: false }
   },
   {
     path: '/matrix',
+    name: 'Matrix',
     component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/MatrixPage.vue'),
     children: [
       {
@@ -28,12 +37,14 @@ const routes = [
         name: 'Network',
         component: () => import(/* webpackChunkName: "matrix" */ '../views/matrix/NetworkPage.vue')
       }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/projects',
     name: 'Projects',
-    component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue')
+    component: () => import(/* webpackChunkName: "projects" */ '../views/projects/ProjectsPage.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/projects/:id',
@@ -42,6 +53,7 @@ const routes = [
   {
     path: '/projects/:id/:version',
     component: () => import(/* webpackChunkName: "project" */ '../views/project/ProjectPage.vue'),
+    meta: { requiresAuth: true },
     children: [
       {
         path: '',
@@ -78,16 +90,37 @@ const routes = [
     path: '/flows/:id',
     name: 'Flow',
     component: () => import(/* webpackChunkName: "flows" */ '../views/flow/FlowPage.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/interactions/:id',
     name: 'Interaction',
     component: () => import(/* webpackChunkName: "interactions" */ '../views/interaction/InteractionPage.vue'),
-  }
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = new VueRouter({
   routes
 })
+
+router.beforeEach((to, from, next) => {
+
+  // Do not navigate to login if user is already logged in 
+  if (to.name === 'Login' && store.getters.isAuthenticated) {
+    next(false)
+    return
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.getters.isAuthenticated) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 export default router

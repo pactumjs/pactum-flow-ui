@@ -19,9 +19,13 @@ const mutations = {
 };
 
 const actions = {
-  async [Actions.FETCH_RELATIONS]({ commit, getters }) {
+  async [Actions.FETCH_RELATIONS]({ commit, getters, rootGetters }) {
     if (getters.getRelations().length === 0) {
-      const response = await fetch(`/api/flow/v1/relations`);
+      const response = await fetch(`/api/flow/v1/relations`, {
+        headers: {
+          'X-Session-Token': rootGetters.getToken()
+        }
+      });
       if (response.ok) {
         commit(Mutations.ADD_RELATIONS, {
           relations: await response.json()

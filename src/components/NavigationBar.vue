@@ -16,9 +16,15 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-menu offset-y open-on-hover>
+      <v-menu v-if="isAuthenticated" offset-y open-on-hover>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn class="yellow--text overline" :to="'/matrix'" v-bind="attrs" v-on="on" text>
+          <v-btn
+            class="yellow--text overline"
+            :to="'/matrix'"
+            v-bind="attrs"
+            v-on="on"
+            text
+          >
             Matrix
           </v-btn>
         </template>
@@ -33,17 +39,60 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn class="yellow--text overline" :to="'/projects'" text>
+      <v-btn
+        v-if="isAuthenticated"
+        class="yellow--text overline"
+        :to="'/projects'"
+        text
+      >
         Projects
       </v-btn>
+      <v-btn
+        v-if="!isAuthenticated"
+        class="yellow--text overline"
+        :to="'/login'"
+        text
+      >
+        Log In
+      </v-btn>
+    </v-toolbar-items>
+    <v-toolbar-items>
+      <v-menu v-if="isAuthenticated" bottom left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn light color="yellow" icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-list color="black">
+          <v-list-item>
+            <v-list-item-avatar>
+              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="user" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="menuItems white--text">
+                {{ user }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="logout">
+            <v-list-item-title class="menuItems">Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar-items>
   </v-app-bar>
 </template>
 
-<style scoped>
+<style>
+@import "https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css";
+
 .pactum {
   text-decoration: none;
   color: #ffeb3b;
+}
+
+.menuItems {
+  color: yellow;
 }
 </style>
 
@@ -56,5 +105,26 @@ export default {
       { title: "Network", path: "/matrix/network" },
     ],
   }),
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+    user() {
+      return this.$store.getters.getUser;
+    },
+  },
+  methods: {
+    logout: function () {
+      this.$store
+        .dispatch("LOGOUT")
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          // TODO: Route to error page and delete sessions
+          console.log(err.message);
+        });
+    },
+  },
 };
 </script>
