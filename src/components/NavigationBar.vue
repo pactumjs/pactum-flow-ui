@@ -65,15 +65,16 @@
         </template>
         <v-list color="black">
           <v-list-item>
-            <v-list-item-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="user" />
-            </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="menuItems white--text">
-                {{ user }}
+                Signed In as
               </v-list-item-title>
+              <v-list-item-subtitle class="white--text">
+                {{ user }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
+          <v-divider color="grey"></v-divider>
           <v-list-item @click="logout">
             <v-list-item-title class="menuItems">Logout</v-list-item-title>
           </v-list-item>

@@ -2,8 +2,8 @@ import { Actions, Mutations } from '../types';
 
 const state = () => {
   return {
-    user: null,
-    token: null
+    user: localStorage.getItem('user'),
+    token: localStorage.getItem('token')
   }
 }
 
@@ -14,13 +14,17 @@ const getters = {
 }
 
 const mutations = {
-  [Mutations.SAVE_SESSION](state, userSession) {
-    state.user = userSession['username'];
-    state.token = userSession['token'];
+  [Mutations.SAVE_SESSION](state, session) {
+    state.user = session['username'];
+    state.token = session['token'];
+    localStorage.setItem('user', state.user);
+    localStorage.setItem('token', state.token);
   },
   [Mutations.INVALIDATE_SESSION](state) {
     state.user = null;
     state.token = null;
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 };
 
@@ -34,17 +38,16 @@ const actions = {
         'authorization': 'Basic ' + base64data
       },
     });
-    const userSession = await response.json();
+    const session = await response.json();
     if (!response.ok) {
       return Promise.reject(new Error(response.status));
     }
-    commit(Mutations.SAVE_SESSION, userSession);
+    commit(Mutations.SAVE_SESSION, session);
     return Promise.resolve(response.status);
   },
 
   async [Actions.LOGOUT]({ commit }) {
     commit(Mutations.INVALIDATE_SESSION);
-    localStorage.clear();
   }
 }
 

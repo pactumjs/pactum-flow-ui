@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from "vuex-persistedstate";
 
 import ProjectsPageView from './views/projects'
 import ProjectPageView from './views/project'
@@ -47,5 +46,4 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules,
-  plugins: [createPersistedState()]
 })
