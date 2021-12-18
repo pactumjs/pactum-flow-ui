@@ -1,4 +1,5 @@
 import { Actions, Mutations } from '../types';
+import request from '../request';
 
 const state = () => {
   return {
@@ -25,11 +26,7 @@ const mutations = {
 const actions = {
   async [Actions.FETCH_QUALITY_GATE_STATUS_BY_PROJECT_VERSION]({ commit, state, rootGetters }, { project, version }) {
     if (!state.loadedProjectVersions.includes(`${project}::${version}`)) {
-      const response = await fetch(`/api/flow/v1/quality-gate/status?projectId=${project}&version=${version}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/quality-gate/status?projectId=${project}&version=${version}`, { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ADD_QUALITY_GATE_STATUS, {
           project,

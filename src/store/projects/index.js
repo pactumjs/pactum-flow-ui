@@ -1,4 +1,5 @@
 import { Actions, Mutations } from '../types';
+import request from '../request';
 
 const state = () => {
   return {
@@ -26,11 +27,7 @@ const mutations = {
 const actions = {
   async [Actions.FETCH_PROJECTS]({ commit, state, rootGetters }) {
     if (!state.allProjectsFetched) {
-      const response = await fetch(`/api/flow/v1/projects`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/projects`, { commit, rootGetters });
       if (response.ok) {
         const projects = await response.json();
         commit(Mutations.ASSIGN_PROJECTS, projects);
@@ -39,11 +36,7 @@ const actions = {
   },
   async [Actions.FETCH_PROJECT_BY_ID]({ commit, getters, rootGetters }, id) {
     if (!getters.getProjectById(id)) {
-      const response = await fetch(`/api/flow/v1/projects/${id}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/projects/${id}`, { commit, rootGetters });
       if (response.ok) {
         const project = await response.json();
         commit(Mutations.ADD_PROJECT, project);

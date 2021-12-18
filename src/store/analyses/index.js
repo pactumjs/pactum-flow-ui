@@ -1,4 +1,5 @@
 import { Actions, Mutations } from '../types';
+import request from '../request';
 
 const state = () => {
   return {
@@ -52,16 +53,13 @@ const actions = {
       }
     }
     if (requiredIds.length > 0) {
-      const response = await fetch('/api/flow/v1/search/analyses', {
+      const options = {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-Token': rootGetters.getToken()
-        },
         body: JSON.stringify({
           ids: requiredIds
         })
-      });
+      }
+      const response = await request('/api/flow/v1/search/analyses', { commit, rootGetters }, options);
       if (response.ok) {
         commit(Mutations.ADD_ANALYSES, await response.json());
       }
@@ -69,11 +67,7 @@ const actions = {
   },
   async [Actions.FETCH_ANALYSIS_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getAnalysisById(id)) {
-      const response = await fetch(`/api/flow/v1/analyses/${id}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/analyses/${id}`, { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ADD_ANALYSIS, await response.json());
       }
@@ -81,11 +75,7 @@ const actions = {
   },
   async [Actions.FETCH_ANALYSIS_METRICS_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getAnalysisMetricsById(id)) {
-      const response = await fetch(`/api/flow/v1/metrics/analyses/${id}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/metrics/analyses/${id}`, { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ADD_ANALYSIS_METRICS, await response.json());
       }
@@ -93,11 +83,7 @@ const actions = {
   },
   async [Actions.FETCH_ANALYSES_BY_PROJECT]({ state, commit, rootGetters }, project) {
     if (!state.loadedAnalysesProjects.includes(project)) {
-      const response = await fetch(`/api/flow/v1/analyses?projectId=${project}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/analyses?projectId=${project}`, { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ADD_ANALYSES_BY_PROJECT, {project, analyses: await response.json()});
       }

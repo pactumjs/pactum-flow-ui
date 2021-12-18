@@ -11,11 +11,11 @@
       Invalid Credentials. Please try again!.
     </v-snackbar>
     <v-card width="400" class="mx-auto my-auto">
-      <v-card-title class="justify-center my-2">
-        <h2>Welcome Back!</h2>
-      </v-card-title>
-      <v-card-text>
-        <v-form v-model="isValid" class="login">
+      <v-form v-model="isValid" class="login">
+        <v-card-title class="justify-center my-2">
+          <h2>Welcome Back!</h2>
+        </v-card-title>
+        <v-card-text>
           <v-text-field
             v-model="username"
             :rules="userNameRules"
@@ -34,19 +34,20 @@
             @click:append="showPassword = !showPassword"
             color="black"
           />
-        </v-form>
-      </v-card-text>
-      <v-card-actions class="justify-end">
-        <v-btn
-          v-on:click="handleSubmit"
-          color="black"
-          :disabled="!isValid"
-          class="yellow--text"
-          block
-          large
-          >Log In</v-btn
-        >
-      </v-card-actions>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn
+            v-on:click.prevent="handleSubmit"
+            color="black"
+            :disabled="!isValid"
+            class="yellow--text"
+            type="submit"
+            block
+            large
+            >Log In</v-btn
+          >
+        </v-card-actions>
+      </v-form>
     </v-card>
   </v-app>
 </template>

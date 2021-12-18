@@ -1,4 +1,5 @@
 import { Actions, Mutations } from '../types';
+import request from '../request';
 
 function getKey({ consumer, consumerVersion, provider, providerVersion }) {
   let key = consumer;
@@ -52,11 +53,7 @@ const actions = {
       let qs = '';
       if (consumerVersion) qs = qs + `&consumerVersion=${consumerVersion}`;
       if (providerVersion) qs = qs + `&providerVersion=${providerVersion}`;
-      const response = await fetch(`/api/flow/v1/compatibility?consumer=${consumer}&provider=${provider}${qs}`, {
-        headers: {
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/compatibility?consumer=${consumer}&provider=${provider}${qs}`, { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ADD_COMPATIBILITIES, {
           consumer, consumerVersion, provider, providerVersion,

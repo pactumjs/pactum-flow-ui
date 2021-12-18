@@ -1,4 +1,5 @@
 import { Actions, Mutations } from '../types';
+import request from '../request';
 
 const state = () => {
   return {
@@ -40,13 +41,7 @@ const mutations = {
 const actions = {
   async [Actions.FETCH_INTERACTIONS_BY_ANALYSIS_ID]({ commit, state, rootGetters }, id) {
     if (!state.loadedAnalyses.includes(id)) {
-      const response = await fetch(`/api/flow/v1/interactions?analysisId=${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/interactions?analysisId=${id}`, { rootGetters, commit });
       if (response.ok) {
         commit(Mutations.ADD_INTERACTIONS, await response.json());
         commit(Mutations.ADD_ANALYSIS_TO_LOADED_INTERACTIONS, id);
@@ -55,13 +50,7 @@ const actions = {
   },
   async [Actions.FETCH_INTERACTION_BY_ID]({ getters, commit, rootGetters }, id) {
     if (!getters.getInteractionById(id)) {
-      const response = await fetch(`/api/flow/v1/interactions/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Session-Token': rootGetters.getToken()
-        }
-      });
+      const response = await request(`/api/flow/v1/interactions/${id}`, { rootGetters, commit });
       if (response.ok) {
         commit(Mutations.ADD_INTERACTION, await response.json());
       }
