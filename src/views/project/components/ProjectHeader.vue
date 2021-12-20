@@ -4,15 +4,20 @@
       <v-col cols="10">
         <span class="text-h5">
           <v-icon color="black" left>mdi-domain</v-icon>
-          <span>{{ name }}</span>
+          <span class="mr-2">{{ name }}</span>
           <span v-for="gate in gates" :key="gate.environment">
-            <v-chip v-if="gate.status === 'OK'" class="ma-2" color="green darken-2" text-color="white">
+            <v-chip
+              v-if="gate.status === 'OK'"
+              class="mr-1"
+              color="green darken-2"
+              text-color="white"
+            >
               <v-avatar left>
                 <v-icon>mdi-checkbox-marked-circle</v-icon>
               </v-avatar>
               {{ gate.environment }}
             </v-chip>
-            <v-chip v-else class="ma-2" color="red darken-2" text-color="white">
+            <v-chip v-else class="mr-1" color="red darken-2" text-color="white">
               <v-avatar left>
                 <v-icon>mdi-close-circle</v-icon>
               </v-avatar>
@@ -34,7 +39,7 @@
         ></v-select>
       </v-col>
     </v-row>
-    <v-divider class="mt-1 mb-1"></v-divider>
+    <v-divider class="mt-3 mb-1"></v-divider>
   </main>
 </template>
 
