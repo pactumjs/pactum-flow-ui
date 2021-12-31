@@ -13,6 +13,9 @@ const getters = {
   getAnalysisById: (state) => (id) => {
     return state.analyses.find(analysis => analysis._id === id);
   },
+  getAnalysesByIds: (state) => (ids) => {
+    return state.analyses.filter(analysis => ids.includes(analysis._id));
+  },
   getAnalysisMetricsById: (state) => (id) => {
     return state.analysesMetrics.find(am => am._id === id);
   },
