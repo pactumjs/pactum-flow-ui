@@ -1,22 +1,31 @@
 <template>
   <div>
     <div v-if="filter || (flows && flows.length > 0)">
-      <v-form>
-        <v-text-field
-          prepend-icon="mdi-magnify"
-          v-model="filter"
-          dense
-          clearable
-          color="black"
-          placeholder="Search"
-        ></v-text-field>
-      </v-form>
+      <v-row no-gutters>
+        <v-col cols="6">
+          <v-form>
+            <v-text-field
+              prepend-icon="mdi-magnify"
+              v-model="filter"
+              dense
+              clearable
+              color="black"
+              placeholder="Search"
+            ></v-text-field>
+          </v-form>
+        </v-col>
+        <v-col cols="6">
+          <v-chip class="float-right" color="orange darken-3" label outlined>
+            {{ filtered_flows.length }} Flows
+          </v-chip>
+        </v-col>
+      </v-row>
     </div>
     <div v-if="flows && flows.length > 0">
       <v-list>
         <ListHeader text="Flows" icon="mdi-arrow-decision-outline" />
         <v-divider></v-divider>
-        <ListItems :items="flows" path="flows" />
+        <ListItems :items="filtered_flows" path="flows" />
       </v-list>
     </div>
     <div v-else>
@@ -50,14 +59,16 @@ export default {
       );
     },
     flows() {
+      return this.$store.getters.getFlowsByAnalysisId(this.analysis._id);
+    },
+    filtered_flows() {
       if (this.filter) {
-        return this.$store.getters.getFlowsByAnalysisId(this.analysis._id).filter((flow) => {
-          return (
+        return this.flows.filter(
+          (flow) =>
             flow.name.includes(this.filter) || flow.info.includes(this.filter)
-          );
-        });
+        );
       } else {
-        return this.$store.getters.getFlowsByAnalysisId(this.analysis._id);
+        return this.flows;
       }
     },
   },

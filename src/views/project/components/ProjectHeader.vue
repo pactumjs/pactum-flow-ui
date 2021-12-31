@@ -2,7 +2,7 @@
   <main>
     <v-row no-gutters>
       <v-col cols="10">
-        <span class="text-h5">
+        <span class="text-h6">
           <v-icon color="black" left>mdi-domain</v-icon>
           <span class="mr-2">{{ name }}</span>
           <span v-for="gate in gates" :key="gate.environment">
@@ -29,7 +29,7 @@
       <v-col cols="2">
         <v-select
           :items="versions"
-          label="Versions"
+          :label="versions_label"
           outlined
           dense
           color="black"
@@ -66,6 +66,9 @@ export default {
       }
       return [];
     },
+    versions_label() {
+      return `Versions (${this.versions.length})`;
+    }
   },
   methods: {
     loadVersion(version) {
