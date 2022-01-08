@@ -165,12 +165,9 @@ export default {
     },
     analyses() {
       const env_name = this.$store.getters.getSelectedEnvironment();
-      const environment = this.$store.getters.getEnvironmentById(env_name);
-      if (environment) {
-        const analysis_ids = Object.values(environment.projects);
-        return this.$store.getters.getAnalysesByIds(analysis_ids);
-      }
-      return [];
+      const env_projects = this.$store.getters.getEnvironmentById(env_name);
+      const analysis_ids = env_projects.map(_env => _env.analysisId);
+      return this.$store.getters.getAnalysesByIds(analysis_ids);
     },
   },
   methods: {

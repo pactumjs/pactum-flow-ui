@@ -7,11 +7,8 @@ const actions = {
       dispatch(Actions.FETCH_ENVIRONMENTS)
     ]);
     const envs = rootGetters.getEnvironments();
-    for (let i = 0; i < envs.length; i++) {
-      const env = envs[i];
-      const analysesIds = Object.values(env.projects);
-      await dispatch(Actions.FETCH_ANALYSES_BY_IDS, analysesIds);
-    }
+    const analysisIds = envs.map(_env => _env.analysisId);
+    await dispatch(Actions.FETCH_ANALYSES_BY_IDS, analysisIds);
   }
 }
 

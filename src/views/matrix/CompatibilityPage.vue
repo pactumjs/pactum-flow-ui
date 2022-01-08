@@ -234,21 +234,13 @@ export default {
       const envs = this.$store.getters.getEnvironments();
       for (let i = 0; i < envs.length; i++) {
         const env = envs[i];
-        const projects = Object.keys(env.projects);
-        for (let j = 0; j < projects.length; j++) {
-          const project = projects[j];
-          const analysisId = env.projects[project];
-          const analysis = this.$store.getters.getAnalysisById(analysisId);
-          if (analysis) {
-            if (!projectEnvs[project]) {
-              projectEnvs[project] = {};
-            }
-            if (!projectEnvs[project][analysis.version]) {
-              projectEnvs[project][analysis.version] = [];
-            }
-            projectEnvs[project][analysis.version].push(env._id);
-          }
+        if (!projectEnvs[env.projectId]) {
+          projectEnvs[env.projectId] = {};
         }
+        if (!projectEnvs[env.projectId][env.version]) {
+          projectEnvs[env.projectId][env.version] = [];
+        }
+        projectEnvs[env.projectId][env.version].push(env.name);
       }
       return projectEnvs;
     },

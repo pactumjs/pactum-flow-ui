@@ -15,9 +15,9 @@
           <v-icon v-else color="yellow"> mdi-all-inclusive </v-icon>
         </v-btn>
       </template>
-      <div v-for="environment in environments" :key="environment._id">
-        <v-btn v-if="environment._id === selected" small color="yellow accent-4"> {{ environment._id }} </v-btn>
-        <v-btn v-else small color="grey lighten-5" @click="changeEnvironment(environment._id)"> {{ environment._id }} </v-btn>
+      <div v-for="environment in environments" :key="environment">
+        <v-btn v-if="environment === selected" small color="yellow accent-4"> {{ environment }} </v-btn>
+        <v-btn v-else small color="grey lighten-5" @click="changeEnvironment(environment)"> {{ environment }} </v-btn>
       </div>
     </v-speed-dial>
   </main>
@@ -42,7 +42,8 @@ export default {
       return this.$store.getters.getSelectedEnvironment();
     },
     environments() {
-      return this.$store.getters.getEnvironments();
+      const envs = this.$store.getters.getEnvironments();
+      return Array.from(new Set(envs.map(_env => _env.name)));
     },
   },
   methods: {

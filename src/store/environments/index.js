@@ -16,12 +16,12 @@ const getters = {
     return state.environments;
   },
   getEnvironmentById: (state) => (id) => {
-    return state.environments.find(environment => environment._id === id);
+    return state.environments.filter(_env => _env.name === id);
   },
   getProjectAnalysisIdByEnvironment: (state) => (env, project) => {
-    const reqEnv = state.environments.find(environment => environment._id === env);
-    if (reqEnv) {
-      return reqEnv.projects[`${project}`];
+    const env_project = state.environments.find(_env => _env.name === env && _env.projectId === project);
+    if (env_project) {
+      return env_project.analysisId;
     }
     return null;
   }
