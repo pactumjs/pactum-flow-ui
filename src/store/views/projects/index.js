@@ -19,8 +19,8 @@ const actions = {
       commit(Mutations.LOADING_PROJECTS, true);
       await dispatch(Actions.FETCH_ENVIRONMENTS);
       await dispatch(Actions.FETCH_PROJECTS);
-      const env_projects = rootGetters.getEnvironmentById(rootGetters.getSelectedEnvironment());
-      const analysisIds = env_projects.map(_env => _env.analysisId);
+      const releases = rootGetters.getEnvironments();
+      const analysisIds = releases.map(_release => _release.analysisId);
       await dispatch(Actions.FETCH_ANALYSES_BY_IDS, analysisIds);
     } catch (error) {
       console.log(error);

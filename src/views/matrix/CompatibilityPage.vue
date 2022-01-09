@@ -227,7 +227,7 @@ export default {
         consumerVersion: this.consumerVersion,
         provider: this.provider,
         providerVersion: this.providerVersion
-      });
+      }).sort((a, b) => new Date(b.verifiedAt) - new Date(a.verifiedAt));
     },
     projectEnvs() {
       const projectEnvs = {};
