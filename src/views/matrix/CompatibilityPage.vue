@@ -89,7 +89,7 @@
         </template>
         <template v-slot:[`item.status`]="{ item }">
           <div v-if="item.status === 'PASSED'">
-            <v-btn disabled text icon>
+            <v-btn class="green--text" text icon>
               <v-icon dark> mdi-check-bold </v-icon>
             </v-btn>
           </div>

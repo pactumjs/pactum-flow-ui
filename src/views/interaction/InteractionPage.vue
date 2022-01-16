@@ -146,6 +146,9 @@ export default {
     providerVersions() {
       return this.$store.getters
         .getAnalysisByProject(this.interaction.provider)
+        .sort((analysis_one, analysis_two) => {
+          return new Date(analysis_two.createdAt) - new Date(analysis_one.createdAt)
+        })
         .map((analysis) => analysis.version);
     },
     flow() {
