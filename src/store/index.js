@@ -7,7 +7,7 @@ import FlowPageView from './views/flow'
 import InteractionPageView from './views/interaction'
 import MatrixPageView from './views/matrix'
 
-import Environments from './environments'
+import Releases from './releases'
 import Projects from './projects'
 import Analyses from './analyses'
 import Interactions from './interactions'
@@ -30,7 +30,7 @@ const modules = {
   FlowPageView,
   InteractionPageView,
   MatrixPageView,
-  Environments,
+  Releases,
   Projects,
   Analyses,
   Interactions,

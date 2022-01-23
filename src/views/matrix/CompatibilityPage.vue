@@ -231,7 +231,7 @@ export default {
     },
     projectEnvs() {
       const projectEnvs = {};
-      const envs = this.$store.getters.getEnvironments();
+      const envs = this.$store.getters.getReleases();
       for (let i = 0; i < envs.length; i++) {
         const env = envs[i];
         if (!projectEnvs[env.projectId]) {

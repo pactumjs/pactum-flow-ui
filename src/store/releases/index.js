@@ -4,7 +4,7 @@ import request from '../request';
 const state = () => {
   return {
     selected: 'latest',
-    environments: []
+    releases: []
   }
 }
 
@@ -12,14 +12,14 @@ const getters = {
   getSelectedEnvironment: (state) => () => {
     return state.selected;
   },
-  getEnvironments: (state) => () => {
-    return state.environments;
+  getReleases: (state) => () => {
+    return state.releases;
   },
-  getEnvironmentById: (state) => (id) => {
-    return state.environments.filter(_env => _env.name === id);
+  getReleaseByEnv: (state) => (id) => {
+    return state.releases.filter(_env => _env.name === id);
   },
   getProjectAnalysisIdByEnvironment: (state) => (env, project) => {
-    const env_project = state.environments.find(_env => _env.name === env && _env.projectId === project);
+    const env_project = state.releases.find(_env => _env.name === env && _env.projectId === project);
     if (env_project) {
       return env_project.analysisId;
     }
@@ -28,8 +28,8 @@ const getters = {
 }
 
 const mutations = {
-  [Mutations.ASSIGN_ENVIRONMENTS](state, environments) {
-    state.environments = environments;
+  [Mutations.ASSIGN_ENVIRONMENTS](state, releases) {
+    state.releases = releases;
   },
   [Mutations.UPDATE_ENVIRONMENT](state, environment) {
     state.selected = environment;
@@ -38,8 +38,8 @@ const mutations = {
 
 const actions = {
   async [Actions.FETCH_ENVIRONMENTS]({ commit, state, rootGetters }) {
-    if (state.environments.length === 0) {
-      const response = await request('/api/flow/v1/environments', { commit, rootGetters });
+    if (state.releases.length === 0) {
+      const response = await request('/api/flow/v1/releases', { commit, rootGetters });
       if (response.ok) {
         commit(Mutations.ASSIGN_ENVIRONMENTS, await response.json());
       }

@@ -165,7 +165,7 @@ export default {
     },
     analyses() {
       const env_name = this.$store.getters.getSelectedEnvironment();
-      const env_projects = this.$store.getters.getEnvironmentById(env_name);
+      const env_projects = this.$store.getters.getReleaseByEnv(env_name);
       const analysis_ids = env_projects.map(_env => _env.analysisId);
       return this.$store.getters.getAnalysesByIds(analysis_ids);
     },

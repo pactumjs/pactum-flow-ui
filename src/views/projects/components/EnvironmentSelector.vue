@@ -42,7 +42,7 @@ export default {
       return this.$store.getters.getSelectedEnvironment();
     },
     environments() {
-      const envs = this.$store.getters.getEnvironments();
+      const envs = this.$store.getters.getReleases();
       return Array.from(new Set(envs.map(_env => _env.name)));
     },
   },
